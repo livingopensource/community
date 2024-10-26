@@ -27,7 +27,7 @@
 
 <Footer footerType="logo" class="align-bottom">
 	<div class="sm:flex sm:items-center sm:justify-between">
-	<FooterBrand href="https://livingopensource.org" src={logoImg} alt="Logo" name="Living Open Source Foundation" />
+	<FooterBrand href="https://livingopensource.org" src={logoImg} alt="Logo" name="Living Open Source Foundation" spanClass="wrap-text dark:text-white" />
 	  <FooterLinkGroup ulClass="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400">
 		<FooterLink href="/about">About</FooterLink>
 		<FooterLink href="/pricing">Privacy Policy</FooterLink>
