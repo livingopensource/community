@@ -16,8 +16,8 @@
   <NavHamburger  />
   <NavUl >
     <NavLi href="/">Home</NavLi>
-    <NavLi href="/about">About</NavLi>
-    <NavLi href="/pricing">Pricing</NavLi>
+    <NavLi href="/certifications">Certifications</NavLi>
+    <NavLi href="/membership">Membership</NavLi>
     <NavLi href="/contact">Contact</NavLi>
 	<NavLi><DarkMode {btnClass}/></NavLi>
   </NavUl>
