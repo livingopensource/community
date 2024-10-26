@@ -18,7 +18,6 @@
     <NavLi href="/">Home</NavLi>
     <NavLi href="/certifications">Certifications</NavLi>
     <NavLi href="/membership">Membership</NavLi>
-    <NavLi href="/contact">Contact</NavLi>
 	<NavLi><DarkMode {btnClass}/></NavLi>
   </NavUl>
 </Navbar>
@@ -27,14 +26,12 @@
 
 <Footer footerType="logo" class="align-bottom">
 	<div class="sm:flex sm:items-center sm:justify-between">
-	<FooterBrand href="https://livingopensource.org" src={logoImg} alt="Logo" name="Living Open Source Foundation" spanClass="wrap-text dark:text-white" />
+	<FooterBrand href="https://livingopensource.org" target="_blank" src={logoImg} alt="Logo" name="Living Open Source Foundation" spanClass="wrap-text dark:text-white" />
 	  <FooterLinkGroup ulClass="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400">
-		<FooterLink href="/about">About</FooterLink>
-		<FooterLink href="/pricing">Privacy Policy</FooterLink>
-		<FooterLink href="/license">Licensing</FooterLink>
-		<FooterLink href="/contact">Contact</FooterLink>
+		<FooterLink href="https://livingopensource.org" target="_blank">Living Open Source Website</FooterLink>
+		<FooterLink href="https://livingopensource.org/contact-us/" target="_blank">Contact</FooterLink>
 	  </FooterLinkGroup>
 	</div>
 	<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-	<FooterCopyright href="/" by="Living Open Source Foundation" year={new Date().getFullYear()} />
+	<FooterCopyright href="https://livingopensource.org" target="_blank" by="Living Open Source Foundation" year={new Date().getFullYear()} />
 </Footer>
