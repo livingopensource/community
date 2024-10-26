@@ -5,3 +5,6 @@
 <svelte:head>
   <title> LOSF Conference {$page.params.name}</title>
 </svelte:head>
+
+<div class="flex-grow">
+</div>

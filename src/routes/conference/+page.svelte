@@ -6,4 +6,6 @@
   <title> LOSF Conferences</title>
 </svelte:head>
 
-<h1>LOSF Conferences</h1>
+<div class="flex-grow">
+  <h1>LOSF Conferences</h1>
+</div>

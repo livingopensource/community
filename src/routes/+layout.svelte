@@ -10,8 +10,8 @@
 
 <Navbar class="shadow-2xl">
   <NavBrand href="/">
-    <img src={logoImg} class="me-3 h-6 sm:h-9" alt="Convo Logo" />
-    <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Conferences</span>
+    <img src={logoImg} class="me-3 h-6 sm:h-9" alt="LOSF Logo" />
+    <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Community</span>
   </NavBrand>
   <NavHamburger  />
   <NavUl >
@@ -25,7 +25,7 @@
 
 {@render children()}
 
-<Footer footerType="logo" class="">
+<Footer footerType="logo" class="align-bottom">
 	<div class="sm:flex sm:items-center sm:justify-between">
 	<FooterBrand href="https://livingopensource.org" src={logoImg} alt="Logo" name="Living Open Source Foundation" />
 	  <FooterLinkGroup ulClass="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400">

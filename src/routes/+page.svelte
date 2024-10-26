@@ -23,7 +23,8 @@
   <title> LOSF Conference Home</title>
 </svelte:head>
 
-<div class="grid grid-cols-1 place-content-center backdrop-blur-sm bg-white/30">
+<div class="flex-grow">
+  <div class="grid grid-cols-1 place-content-center backdrop-blur-sm bg-white/30">
     <Carousel transition={scaleAnimation} {images} duration={15000} imgClass="grayscale" />
 </div>
 
@@ -42,5 +43,6 @@
   </TimelineItem>
 </Timeline>
 
+</div>
 </div>
 

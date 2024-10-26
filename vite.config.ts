@@ -7,7 +7,9 @@ export default defineConfig({
 		enhancedImages(),
 		sveltekit()
 	],
-
+	server: {
+		host: '0.0.0.0'
+	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
