@@ -29,6 +29,10 @@
     ];
 </script>
 
+<svelte:head>
+  <title> Certifications  | LOSF Community </title>
+</svelte:head>
+
 <div class="flex-grow">
     <div class="flex flex-col justify-center items-center px-6 mx-auto xl:px-0">
         <h1 class="p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">

@@ -18,7 +18,6 @@
     <NavLi href="/">Home</NavLi>
     <NavLi href="/certifications">Certifications</NavLi>
     <NavLi href="/membership">Membership</NavLi>
-	<NavLi><DarkMode {btnClass}/></NavLi>
   </NavUl>
 </Navbar>
 

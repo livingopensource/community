@@ -1,24 +1,20 @@
 <script lang="ts">
 	import '../../app.css';
 	let { children } = $props();
-	//import logo from '$lib/assets/images/LOSF Orange.png?enhanced';
 	import logoImg from '$lib/assets/images/LOSF Orange.png';
-	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode } from 'flowbite-svelte';
+	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { Footer, FooterCopyright, FooterLinkGroup, FooterBrand, FooterLink } from 'flowbite-svelte';
-	let btnClass = 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-xl p-2';
 </script>
 
 <Navbar class="shadow-2xl">
-  <NavBrand href="/">
+  <NavBrand href="/dash">
     <img src={logoImg} class="me-3 h-6 sm:h-9" alt="LOSF Logo" />
     <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Community</span>
   </NavBrand>
   <NavHamburger  />
   <NavUl >
     <NavLi href="/">Home</NavLi>
-    <NavLi href="/certifications">Certifications</NavLi>
-    <NavLi href="/membership">Membership</NavLi>
-	<NavLi><DarkMode {btnClass}/></NavLi>
+    <NavLi href="/dash/membership">Membership</NavLi>
   </NavUl>
 </Navbar>
 

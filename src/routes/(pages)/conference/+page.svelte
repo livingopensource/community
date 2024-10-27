@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title> LOSF Conferences</title>
+  <title>  COnferences | LOSF Communityy </title>
 </svelte:head>
 
 <div class="flex-grow">

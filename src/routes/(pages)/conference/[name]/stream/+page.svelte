@@ -50,7 +50,7 @@
 </script>
 
 <svelte:head>
-  <title> LOSF Conference {$page.params.name} Stream</title>
+  <title> {$page.params.name} Stream |  | LOSF Community</title>
   <script src="https://{data.streamURL}/external_api.js"></script>
 </svelte:head>
 
