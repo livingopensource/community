@@ -3,8 +3,13 @@ import { DBConn } from "./init";
 
 class User extends Model {}
 
-User.init(
+const user = User.init(
     {
+        id: { 
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          primaryKey: true,
+        },
         firstName: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -34,3 +39,5 @@ User.init(
         tableName: 'users'
     },
 );
+
+export {user as User}

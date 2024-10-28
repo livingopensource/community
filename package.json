@@ -40,6 +40,7 @@
 	},
 	"dependencies": {
 		"dotenv": "^16.4.5",
+		"fast-xml": "^0.0.1",
 		"pg": "^8.13.1",
 		"pg-hstore": "^2.3.4",
 		"sequelize": "^6.37.5"
