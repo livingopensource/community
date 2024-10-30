@@ -18,6 +18,7 @@
     <NavLi href="/">Home</NavLi>
     <NavLi href="/certifications">Certifications</NavLi>
     <NavLi href="/membership">Membership</NavLi>
+	<NavLi href="/dash">Portal</NavLi>
   </NavUl>
 </Navbar>
 

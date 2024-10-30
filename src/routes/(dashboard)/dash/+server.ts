@@ -1,7 +1,7 @@
 import { DBConn } from "$lib/server/databases/pg/init";
 import { Membership } from "$lib/server/databases/pg/memberships";
 import { Permission, Role } from "$lib/server/databases/pg/permissions";
-import { User } from "$lib/server/databases/pg/users";
+import { Session, User } from "$lib/server/databases/pg/users";
 import { json } from "@sveltejs/kit";
 
 export async function GET() {
@@ -11,5 +11,6 @@ export async function GET() {
     Role.findAll()
     Permission.findAll()
     Membership.findAll()
+    Session.findAll()
     return json({"message": "database migrations"})
 }

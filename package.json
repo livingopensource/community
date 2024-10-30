@@ -19,6 +19,7 @@
 		"@sveltejs/enhanced-img": "^0.3.10",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@types/bcrypt": "^5.0.2",
 		"@types/eslint": "^9.6.0",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.7.0",
@@ -40,6 +41,7 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
+		"bcrypt": "^5.1.1",
 		"dotenv": "^16.4.5",
 		"fast-xml": "^0.0.1",
 		"pg": "^8.13.1",
