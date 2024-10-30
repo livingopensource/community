@@ -2,7 +2,7 @@ import { Model, DataTypes } from "sequelize";
 import { DBConn } from "./init";
 
 class User extends Model {
-  static getUserByEmail(email: string) {
+  static getByEmail(email: string) {
     return User.findOne({where : {
       email: email
     }})
@@ -46,7 +46,25 @@ const user = User.init(
   },
 );
 
-class Session extends Model {}
+class Session extends Model {
+  static getUser(sessionId: string) {
+    return Session.findOne({
+      where: {
+        id: sessionId
+      },
+      include: [
+        {
+          model: User
+        }
+      ],
+      exclude: [
+        {
+          attributes: ['password']
+        }
+      ]
+    })
+  }
+}
 
 const session = Session.init({
   id: { 

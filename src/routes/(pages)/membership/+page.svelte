@@ -1,5 +1,5 @@
 <script>
-    import { Card, Badge } from 'flowbite-svelte';
+    import { Card, Badge, A } from 'flowbite-svelte';
     const certifications = [
         {
             "amount": "$ 20/year",
@@ -69,7 +69,7 @@
         </div>
 		<div class="flex justify-center flex-wrap gap-3 p-5">
 			{#each certifications as certification}
-                <Card >
+                <Card  href="/dash/membership?type={certification.title}">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {certification.title}
                     </h5>

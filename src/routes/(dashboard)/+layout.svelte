@@ -1,22 +1,43 @@
 <script lang="ts">
 	import '../../app.css';
-	let { children } = $props();
+	import type { LayoutData } from './$types';
+	import type { Snippet } from 'svelte';
+	import { page } from '$app/stores';
+	let { children, data }: {children: Snippet<[]>, data: LayoutData} = $props();
 	import logoImg from '$lib/assets/images/LOSF Orange.png';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
-	import { Footer, FooterCopyright, FooterLinkGroup, FooterBrand, FooterLink } from 'flowbite-svelte';
+	import { Footer, FooterCopyright, FooterLinkGroup, FooterBrand, FooterLink, Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
+
+	function urlPath(index: number) {
+		const fullURL = $page.url.pathname;
+		const parts = fullURL.split("/").slice(0, index + 1);
+		const path = parts.join("/");
+		return path;
+	}
 </script>
 
 <Navbar class="shadow-2xl">
-  <NavBrand href="/dash">
+  <NavBrand href="/">
     <img src={logoImg} class="me-3 h-6 sm:h-9" alt="LOSF Logo" />
     <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Community</span>
   </NavBrand>
   <NavHamburger  />
-  <NavUl >
-    <NavLi href="/">Home</NavLi>
-    <NavLi href="/dash/membership">Membership</NavLi>
+  <NavUl>
+    <NavLi>{data?.user.User.firstName ?? 'User'}</NavLi>
   </NavUl>
 </Navbar>
+
+<div class="mx-10">
+	<Breadcrumb>
+		{#each $page.url.pathname.toString().split("/") as path, index}
+			{#if index === 0}
+				<BreadcrumbItem href="/" home>{path}</BreadcrumbItem>
+			{:else}
+				<BreadcrumbItem href={urlPath(index)}>{path}</BreadcrumbItem>
+			{/if}
+		{/each}
+	</Breadcrumb>
+</div>
 
 {@render children()}
 

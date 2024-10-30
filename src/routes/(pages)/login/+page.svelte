@@ -24,15 +24,6 @@
 
 <div class="flex-grow">
   <div class="m-10  flex flex-col justify-center max-w-xl">
-    {#if form?.body?.messages}
-      <div class="error">
-        {#each form.body.messages as error}
-          <div class="error">
-            <p class="dark:text-red-600">{error}</p>
-          </div>
-        {/each}
-      </div>
-    {/if}
     <div class="container mx-auto my-12">
       <div class="content-center">
           <Card size={'lg'} class="container mx-auto">
@@ -46,9 +37,15 @@
                     <Label for="password" class="mb-2">Password</Label>
                     <Input type="password" name="password" placeholder="•••••••••" required />
                   </div>
-                  <!-- {#if form?.message != null}
-                    <p class="text-red-900 dark:text-red-200">{form?.message}</p>
-                  {/if} -->
+                  {#if form?.body?.messages}
+                    <div class="error">
+                      {#each form.body.messages as error}
+                        <div class="error">
+                          <p class="dark:text-red-600">{error}</p>
+                        </div>
+                      {/each}
+                    </div>
+                  {/if}
                   <GradientButton pill outline color="cyanToBlue" size="sm" type="submit">
                     <!-- {#if isLoading}
                       <Spinner />
@@ -58,10 +55,10 @@
                     Sign In
                   </GradientButton>
               </form>
-                <br />
-                <div class="mb-6"> 
-                  <A href="/register">Or Register</A>
-                </div>
+              <br />
+              <div class="mb-6"> 
+                <A href="/register">Or Register</A>
+              </div>
           </Card>
       </div>
   </div>

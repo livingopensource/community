@@ -17,7 +17,7 @@ export const actions = {
 		const email = data.get('email');
 		const password = data.get('password');
 		if (typeof email === 'string' && typeof password === 'string') {
-			const user = await User.getUserByEmail(email);
+			const user = await User.getByEmail(email);
 			if (user) {
 				const userDetails = user.toJSON();
 				const valid = await bcrypt.compare(password, userDetails.password);
