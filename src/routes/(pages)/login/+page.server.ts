@@ -28,7 +28,7 @@ export const actions = {
 						const session = await Session.create({
 							UserId: userDetails.id
 						})
-						const sessionId = session.toJSON().id;
+						const sessionId = session.toJSON().session;
 						if (sessionId) {
 							cookies.set('losf', sessionId, {
 								path: '/',

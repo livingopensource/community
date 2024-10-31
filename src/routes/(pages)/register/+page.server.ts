@@ -16,6 +16,8 @@ export async function load(event) {
 
 export const actions = {
     default: async({ request, cookies }) => {
+        let allowLogin: boolean = false;
+		let redirectURL: string = "/dash";
         const formData = await request.formData()
         const password = formData.get("password")
         if (typeof password !== 'string') {
@@ -32,7 +34,7 @@ export const actions = {
              const refererURL = request.headers.get("referer");
              if (result.get("id") != null) {
                  const session = await Session.create({
-                     userId: result.get("id")
+                     UserId: result.get("id")
                  })
                  if (session.get("id") == null) {
                     throw new Error('Session creation failed')
@@ -51,9 +53,14 @@ export const actions = {
                  if (refererURL != null) {
                      const urlParams = new URLSearchParams(refererURL.split('?')[1]);
                      const path = urlParams.get('redirect');
-                     return redirect(302, path || '/dash/membership')
+                     allowLogin = true
+                     redirectURL = path || '/dash/membership'
+                 } else {
+                    allowLogin = true
+                    redirectURL = '/dash/membership'
                  }
-                 return redirect(302, '/dash/membership')
+             } else {
+                allowLogin = false
              }
         } catch(err: unknown) {
             if (err instanceof ValidationError) {
@@ -72,6 +79,9 @@ export const actions = {
                 }
             }
             throw err;
+        }
+        if (allowLogin) {
+            redirect(302, redirectURL);
         }
         return {
             status: 400,

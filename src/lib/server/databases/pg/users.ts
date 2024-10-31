@@ -50,7 +50,7 @@ class Session extends Model {
   static getUser(sessionId: string) {
     return Session.findOne({
       where: {
-        id: sessionId
+        session: sessionId
       },
       include: [
         {
