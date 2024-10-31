@@ -14,7 +14,8 @@
     Button
   } from 'flowbite-svelte';
   import {
-    ArrowRightOutline
+    ArrowRightOutline,
+    PlusOutline
   } from 'flowbite-svelte-icons';
   import { slide } from 'svelte/transition';
 	import type { PageServerLoad } from './$types';
@@ -117,12 +118,14 @@
           <TableHead>
             <TableHeadCell>Membership name</TableHeadCell>
             <TableHeadCell>Amount</TableHeadCell>
+            <TableHeadCell></TableHeadCell>
           </TableHead>
           <TableBody tableBodyClass="divide-y">
             {#each membership as item, i}
               <TableBodyRow on:click={() => toggleRow(i)}>
                 <TableBodyCell>{item.title}</TableBodyCell>
                 <TableBodyCell>{item.amount}</TableBodyCell>
+                <TableBodyCell><PlusOutline /></TableBodyCell>
               </TableBodyRow>
               {#if openRow === i}
                 <TableBodyRow on:dblclick={() => {
@@ -131,10 +134,10 @@
                 }}>
                   <TableBodyCell colspan={4} class="p-0">
                     <div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
-                      <Card img="/LOSF Orange.png" href="/" horizontal size="lg" reverse={false}>
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{item.title}</h5>
+                      <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.title}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.brief}</p>
-                        <Button size="sm" class="mt-2 rounded">
+                        <Button size="sm" pill>
                           Subscribe <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
                         </Button>
                       </Card>
