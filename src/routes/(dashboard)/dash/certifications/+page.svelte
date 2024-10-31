@@ -86,7 +86,7 @@
             <TableBody tableBodyClass="divide-y">
               {#each certifications as item, i}
                 <TableBodyRow on:click={() => toggleRow(i)}>
-                  <TableBodyCell>{item.title}</TableBodyCell>
+                  <TableBodyCell class="text-wrap">{item.title}</TableBodyCell>
                   <TableBodyCell class="text-wrap"><PlusOutline class="w-6 h-6 ms-2" /></TableBodyCell>
                 </TableBodyRow>
                 {#if openRow === i}
