@@ -2,7 +2,10 @@
   import {
       Label,
       Input,
-      Button
+      Button,
+      Helper,
+      A,
+      Card
   } from 'flowbite-svelte'
 
   import {
@@ -14,6 +17,8 @@
   import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();
+  let password: string | null = $state(null)
+  let repeatPassword: string | null = $state(null)
 </script>
 
 <svelte:head>
@@ -21,6 +26,7 @@
 </svelte:head>
 
 <div class="flex-grow">
+  <Card size={'lg'} class="container mx-auto">
     <div class="m-10  flex flex-col justify-center max-w-xl">
         {#if form?.body?.errors}
           <div class="error">
@@ -46,17 +52,30 @@
             </div>
             <div class="mb-6">
                 <Label for="input-group-1" class="block mb-2">Password</Label>
-                <Input name="password" type="password" placeholder="name@flowbite.com" required>
+                <Input name="password" type="password" placeholder="name@flowbite.com" required bind:value={password}>
                   <LockSolid slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </Input>
             </div>
             <div class="mb-6">
                 <Label for="input-group-1" class="block mb-2">Repeat Password</Label>
-                <Input name="repeat-password" type="password" placeholder="name@flowbite.com" required>
+                <Input name="repeat-password" type="password" placeholder="name@flowbite.com" required bind:value={repeatPassword}>
                   <LockSolid slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </Input>
+                {#if password !== repeatPassword}
+                  <Helper class='mt-2' color='red'><span class="font-medium">Passwords mismatch!</span> make sure the two passwords are the same.</Helper>
+                {/if}
             </div>
-            <Button type="submit">Create Account</Button>
+            {#if password !== repeatPassword}
+              <Button disabled pill>Create Account</Button>
+            {:else}
+              <Button type="submit" pill>Create Account</Button>
+            {/if}
+            <br />
+            <br />
+            <div class="mb-6"> 
+              <A href="/login">Or Login</A>
+            </div>
         </form>
     </div>
+  </Card>
 </div>
