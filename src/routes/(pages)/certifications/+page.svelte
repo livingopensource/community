@@ -1,5 +1,6 @@
 <script>
-    import { Card } from 'flowbite-svelte';
+    import { Card, Button } from 'flowbite-svelte';
+    import { ArrowRightOutline } from 'flowbite-svelte-icons';
     const certifications = [
         {
             "image": "/certifications/Certified-Linux-Associate.webp",
@@ -40,13 +41,17 @@
         </h1>
 		<div class="flex justify-center flex-wrap gap-3 p-5">
 			{#each certifications as certification, index}
-            <Card img={certification.image} href="/dash/certifications?type={certification.title}">
+            <Card img={certification.image} href="/dash/certifications?type={certification.title}" class="relative">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {certification.title}
                 </h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
                     {certification.description}
                 </p>
+                <br />
+                <Button outline pill size="sm" class="absolute bottom-1 right-5">
+                    Get it
+                </Button>
             </Card>
             {/each}
 		</div>

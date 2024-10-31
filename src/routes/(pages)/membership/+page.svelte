@@ -1,5 +1,5 @@
 <script>
-    import { Card, Badge, A } from 'flowbite-svelte';
+    import { Card, Badge, A, Button } from 'flowbite-svelte';
     const certifications = [
         {
             "amount": "$ 20/year",
@@ -69,19 +69,23 @@
         </div>
 		<div class="flex justify-center flex-wrap gap-3 p-5">
 			{#each certifications as certification}
-                <Card  href="/dash/membership?type={certification.title}">
+                <Card  href="/dash/membership?type={certification.title}" class="relative">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {certification.title}
                     </h5>
                     <p class="mb-5 p-5 font-xs text-gray-700 dark:text-gray-400">
                         {certification.brief}
                     </p>
-                    <Badge rounded large color="green" class="text-2xl font-bold">{certification.amount}</Badge>
+                    <Badge rounded large color="dark" class="text-2xl font-bold">{certification.amount}</Badge>
                     <p class="mt-5 font-normal text-gray-700 dark:text-gray-400">
                         {#each certification.description as describe}
                             {describe} <br/>
                         {/each}
                     </p>
+                    <br />
+                    <Button outline pill size="sm" class="absolute bottom-1 right-5">
+                        Subscribe
+                    </Button>
                 </Card>
             {/each}
 		</div>
