@@ -137,9 +137,12 @@
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.title}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.brief}</p>
-                        <Button size="sm" pill>
-                          Subscribe <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-                        </Button>
+                        <form method="POST">
+                          <input type="hidden" value={item.title} name="type" />
+                          <Button size="sm" pill type="submit">
+                            Subscribe <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
+                          </Button>
+                        </form>
                       </Card>
                     </div>
                   </TableBodyCell>
