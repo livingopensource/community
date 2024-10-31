@@ -4,6 +4,6 @@
 <NavigationLoader 
 	animationDuration={250} 
 	color="#FF8C00" 
-	height={1} 
+	height={3} 
 />
 <slot />

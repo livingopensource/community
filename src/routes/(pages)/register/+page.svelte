@@ -26,6 +26,7 @@
 </svelte:head>
 
 <div class="flex-grow">
+  <br />
   <Card size={'lg'} class="container mx-auto">
     <div class="m-10  flex flex-col justify-center max-w-xl">
         {#if form?.body?.errors}
@@ -40,25 +41,25 @@
         <form method="post">
             <div class="mb-6">
                 <Label for="input-group-1" class="block mb-2">Full Name</Label>
-                <Input name="name" type="text" placeholder="name@flowbite.com" required value={form?.body?.name}>
+                <Input name="name" type="text" placeholder="Ycobo Mpilu" required value={form?.body?.name}>
                   <UserAddSolid slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </Input>
             </div>
             <div class="mb-6">
                 <Label for="input-group-1" class="block mb-2">Your Email</Label>
-                <Input name="email" type="email" placeholder="name@flowbite.com" required value={form?.body?.email}>
+                <Input name="email" type="email" placeholder="ympuli@example.com" required value={form?.body?.email}>
                   <EnvelopeSolid slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </Input>
             </div>
             <div class="mb-6">
                 <Label for="input-group-1" class="block mb-2">Password</Label>
-                <Input name="password" type="password" placeholder="name@flowbite.com" required bind:value={password}>
+                <Input name="password" type="password" placeholder="password" required bind:value={password}>
                   <LockSolid slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </Input>
             </div>
             <div class="mb-6">
                 <Label for="input-group-1" class="block mb-2">Repeat Password</Label>
-                <Input name="repeat-password" type="password" placeholder="name@flowbite.com" required bind:value={repeatPassword}>
+                <Input name="repeat-password" type="password" placeholder="password" required bind:value={repeatPassword}>
                   <LockSolid slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </Input>
                 {#if password !== repeatPassword}

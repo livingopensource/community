@@ -69,7 +69,7 @@
         </div>
 		<div class="flex justify-center flex-wrap gap-3 p-5">
 			{#each certifications as certification}
-                <Card  href="/dash/membership?type={certification.title}" class="relative">
+                <Card img="/LOSF Orange.png" href="/dash/membership?type={certification.title}" class="relative">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {certification.title}
                     </h5>
