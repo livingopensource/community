@@ -7,7 +7,7 @@
       TableHead,
       TableHeadCell
     } from 'flowbite-svelte';
-    const certifications: {
+    const trainings: {
         amount: string;
         title: string;
         brief: string;
@@ -16,25 +16,25 @@
 
 </script>
 <svelte:head>
-  <title> LOSF Conference | Dashboard Certifications</title>
+  <title> LOSF Conference | Dashboard Training</title>
 </svelte:head>
 
 <div class="flex-grow">
     <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
       <h1 class="p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
-        Certifications Details
+        Trainings Details
       </h1>
       <div class="flex flex-wrap justify-center gap-4 p-5 text-center">
         <div class="flex-auto sm:w-max md:w-max">
-          <h1 class="dark:text-white">Certifications / Voucher</h1>
+          <h1 class="dark:text-white">Training Lessons</h1>
           <br />
           <Table>
             <TableHead>
-              <TableHeadCell>Certification name</TableHeadCell>
-              <TableHeadCell>Description</TableHeadCell>
+              <TableHeadCell>Trainings name</TableHeadCell>
+              <TableHeadCell>Amount</TableHeadCell>
             </TableHead>
             <TableBody tableBodyClass="divide-y">
-              {#each certifications as item, i}
+              {#each trainings as item, i}
                 <TableBodyRow>
                   <TableBodyCell>{item.title}</TableBodyCell>
                   <TableBodyCell>{item.amount}</TableBodyCell>
@@ -45,7 +45,7 @@
         </div>
         <div class="flex-auto w-14">
           <h1 class="dark:text-white">
-            You don't have any certifications
+            You don't have actives trainings
           </h1>
           <br />
             <div class="flex justify-center">

@@ -11,7 +11,7 @@
         Get Connected. Get Trained. Get Certified
       </h1>
   <div class="flex flex-wrap justify-center gap-3 p-5 text-center">
-    <Card href="/membership">
+    <Card href="/dash/membership">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
            Membership
         </h5>
@@ -19,7 +19,7 @@
             Be a part of a vibrant community of open source technology enthusiats shaping the technology landscape in Africa and beyond.
         </p>
     </Card>
-    <Card href="/certifications">
+    <Card href="/dash/certifications">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
            Certifications
         </h5>
@@ -27,7 +27,7 @@
             Get certified in different fields and show off your skills to the rest of the world.
         </p>
     </Card>
-    <Card href="/membership">
+    <Card href="/dash/trainings">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
            Trainings
         </h5>
@@ -35,7 +35,7 @@
             Get the best in training materials for Open Source, from a wide variety of sources in one place
         </p>
     </Card>
-    <Card href="/membership">
+    <Card href="/dash/meet-ups">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
            Meet Ups
         </h5>

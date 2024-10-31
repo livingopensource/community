@@ -11,8 +11,7 @@
 	function urlPath(index: number) {
 		const fullURL = $page.url.pathname;
 		const parts = fullURL.split("/").slice(0, index + 1);
-		const path = parts.join("/");
-		return path;
+		return parts.join("/");
 	}
 </script>
 
@@ -28,7 +27,7 @@
 </Navbar>
 
 <div class="mx-10">
-	<Breadcrumb>
+	<Breadcrumb class="bg-gray-50 py-3 my-10 px-5 dark:bg-gray-900">
 		{#each $page.url.pathname.toString().split("/") as path, index}
 			{#if index === 0}
 				<BreadcrumbItem href="/" home>{path}</BreadcrumbItem>

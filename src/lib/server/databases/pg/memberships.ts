@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { DBConn } from "./init";
+import { User } from "./users";
 
 class Membership extends Model {}
 
@@ -24,7 +25,17 @@ const membership = Membership.init({
     tableName: "memberships"
 });
 
-class Subscription extends Model {}
+class Subscription extends Model {
+    static getUserActiveSubscriptions(userId: string) {
+        const subscription = Subscription.findAll({
+            where: {
+                UserId: userId,
+                paid: true
+            }
+        })
+        return subscription
+    }
+}
 
 const subscription = Subscription.init({
     id: { 
@@ -46,6 +57,7 @@ const subscription = Subscription.init({
 });
 
 Membership.hasOne(Subscription)
+Subscription.belongsTo(User)
 
 export {membership as Membership}
 export {subscription as Subscription}

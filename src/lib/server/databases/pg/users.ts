@@ -56,11 +56,6 @@ class Session extends Model {
         {
           model: User
         }
-      ],
-      exclude: [
-        {
-          attributes: ['password']
-        }
       ]
     })
   }
