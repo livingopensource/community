@@ -51,7 +51,7 @@ export const actions = {
                  if (refererURL != null) {
                      const urlParams = new URLSearchParams(refererURL.split('?')[1]);
                      const path = urlParams.get('redirect');
-                     throw redirect(302, path || '/dash/membership')
+                     return redirect(302, path || '/dash/membership')
                  }
                  return redirect(302, '/dash/membership')
              }

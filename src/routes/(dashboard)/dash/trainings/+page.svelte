@@ -45,7 +45,7 @@
         </div>
         <div class="flex-auto w-14">
           <h1 class="dark:text-white">
-            You don't have actives trainings
+            You don't have active trainings
           </h1>
           <br />
             <div class="flex justify-center">

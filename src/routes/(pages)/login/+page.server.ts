@@ -13,6 +13,8 @@ export async function load(event) {
 
 export const actions = {
 	default: async ({ cookies, request }) => {
+		let allowLogin: boolean = false;
+		let redirectURL: string = "/dash";
 		const data = await request.formData();
 		const email = data.get('email');
 		const password = data.get('password');
@@ -41,16 +43,22 @@ export const actions = {
 								const path = urlParams.get('redirect');
 
 								if (path != null) {
-									return redirect(302, path);
+									allowLogin = true;
+									redirectURL = path;
 								}
+								allowLogin = true;
+								redirectURL = "/dash";
+							} else {
+								allowLogin = true;
+								redirectURL = "/dash";
 							}
-							return redirect(302, "/dash");
-						}
-						return {
-							status: 400,
-							body: {
-								messages: ['Login failed'],
-								email: email
+						} else {
+							return {
+								status: 400,
+								body: {
+									messages: ['Login failed'],
+									email: email
+								}
 							}
 						}
 					} catch(err: unknown) {
@@ -70,21 +78,26 @@ export const actions = {
 						}
 						throw err;
 					}
-				}
-				return {
-					status: 400,
-					body: {
-						messages: ['Login failed'],
-						email: email
+					if (allowLogin) {
+						redirect(302, redirectURL);
+					}
+				} else {
+					return {
+						status: 400,
+						body: {
+							messages: ['Login failed'],
+							email: email
+						}
 					}
 				}
 			}
-		}
-		return {
-			status: 400,
-			body: {
-				messages: ['Login failed'],
-				email: email
+		} else {
+			return {
+				status: 400,
+				body: {
+					messages: ['Login failed'],
+					email: email
+				}
 			}
 		}
 	}
