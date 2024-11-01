@@ -5,14 +5,18 @@
 	import { page } from '$app/stores';
 	let { children, data }: {children: Snippet<[]>, data: LayoutData} = $props();
 	import logoImg from '$lib/assets/images/LOSF Orange.png';
-	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+	import { Navbar, NavBrand, Dropdown, DropdownItem, DropdownDivider, Button, DropdownHeader, Avatar, Modal } from 'flowbite-svelte';
 	import { Footer, FooterCopyright, FooterLinkGroup, FooterBrand, FooterLink, Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
+	import { ArrowRightToBracketOutline, ExclamationCircleOutline } from 'flowbite-svelte-icons';
+
 
 	function urlPath(index: number) {
 		const fullURL = $page.url.pathname;
 		const parts = fullURL.split("/").slice(0, index + 1);
 		return parts.join("/");
 	}
+
+	let logOutModal: boolean = $state(false)
 </script>
 
 <Navbar class="shadow-2xl">
@@ -20,11 +24,29 @@
     <img src={logoImg} class="me-3 h-6 sm:h-9" alt="LOSF Logo" />
     <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Community</span>
   </NavBrand>
-  <NavHamburger  />
-  <NavUl>
-    <NavLi>{data?.user.User.firstName ?? 'User'}</NavLi>
-  </NavUl>
+  <Avatar alt={data?.user.User.firstName+" "+data?.user.User.lastName} border/>
+  <Dropdown>
+	<DropdownHeader>
+		<div class="px-4 py-2">
+			<span class="block text-sm text-gray-900 dark:text-white">{data?.user.User.firstName+" "+data?.user.User.lastName}</span>
+			<span class="block truncate text-sm font-medium">{data?.user.User.email}</span>
+		</div>
+	</DropdownHeader>
+	<DropdownItem onclick={() => logOutModal = true}>
+		<Button pill outline>Sign Out  <ArrowRightToBracketOutline /> </Button>
+	</DropdownItem>
+  </Dropdown>
 </Navbar>
+
+<Modal bind:open={logOutModal} size="xs">
+  <div class="text-center">
+    <ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
+    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to log out of this account?</h3>
+    <form action="/dash?/logout" method="POST">
+		<Button pill type="submit" color="red" class="me-2">Yes, I'm sure</Button>
+	</form>
+  </div>
+</Modal>
 
 <div class="mx-10">
 	<Breadcrumb class="bg-gray-50 py-3 my-10 px-5 dark:bg-gray-900">

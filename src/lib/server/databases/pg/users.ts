@@ -59,6 +59,14 @@ class Session extends Model {
       ]
     })
   }
+
+  static deleteSession(sessionId: string) {
+    return Session.destroy({
+      where: {
+        session: sessionId
+      }
+    });
+  }
 }
 
 const session = Session.init({
