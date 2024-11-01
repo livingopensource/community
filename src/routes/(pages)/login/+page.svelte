@@ -25,7 +25,9 @@
 <div class="flex-grow">
   <br />
   <Card size={'lg'} class="container mx-auto">
+    <div class="m-10  flex flex-col justify-center max-w-xl">
     <h2 class="justify-center"> Sign In </h2>
+    <br />
     <form method="POST">
         <div class="mb-6">
           <Label for="email" class="mb-2">Email address</Label>
@@ -51,6 +53,7 @@
     <br />
     <div class="mb-6"> 
       <A href="/register">Or Register</A>
+    </div>
     </div>
 </Card>
 </div>

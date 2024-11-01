@@ -29,6 +29,8 @@
   <br />
   <Card size={'lg'} class="container mx-auto">
     <div class="m-10  flex flex-col justify-center max-w-xl">
+      <h2 class="justify-center"> Register </h2>
+      <br />
         {#if form?.body?.errors}
           <div class="error">
             {#each form.body.errors as error}
