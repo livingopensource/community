@@ -2,7 +2,27 @@ import { Model, DataTypes } from "sequelize";
 import { DBConn } from "./init";
 import { User } from "./users";
 
-class Membership extends Model {}
+class Membership extends Model {
+    static getMembershipDetails(name: string) {
+        return Membership.findOne({
+            where: {
+                name: name
+            }
+        })
+    }
+
+    static getMembership(id: string) {
+        return Membership.findOne({
+            where: {
+                id: id
+            }
+        })
+    }
+
+    static getAllMemberships() {
+        return Membership.findAll()
+    }
+}
 
 const membership = Membership.init({
     id: { 
@@ -15,7 +35,7 @@ const membership = Membership.init({
         allowNull: false,
     },
     subTitle: {type: DataTypes.STRING},
-    description: {type: DataTypes.STRING},
+    description: {type: DataTypes.TEXT},
     amount: {type: DataTypes.DOUBLE, allowNull: false},
     currency: {type: DataTypes.STRING, allowNull: false},
     period: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 12, comment: "Time period in months"}
@@ -27,13 +47,25 @@ const membership = Membership.init({
 
 class Subscription extends Model {
     static getUserActiveSubscriptions(userId: string) {
-        const subscription = Subscription.findAll({
+        return Subscription.findAll({
             where: {
                 UserId: userId,
                 paid: true
             }
         })
-        return subscription
+    }
+
+    static createSubscription(userId: string, membershipId: string, amount: number, currency: string, paymentMethod: string, transactionId: string, status: string, reason: string) {
+        return Subscription.create({
+            UserId: userId,
+            MembershipId: membershipId,
+            amount: amount,
+            currency: currency,
+            paymentMethod: paymentMethod,
+            transactionId: transactionId,
+            status: status,
+            reason: reason
+        })
     }
 }
 

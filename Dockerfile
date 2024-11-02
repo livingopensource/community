@@ -14,6 +14,6 @@ RUN mkdir /app/node_modules
 COPY --from=build /app/build/ /app
 COPY --from=build /app/node_modules/ /app/node_modules
 COPY --from=build /app/package* /app
-#COPY --from=build /app/.env /app/.env
+
 RUN touch /app/.env
 CMD ["node", "--env-file=.env", "index.js"]

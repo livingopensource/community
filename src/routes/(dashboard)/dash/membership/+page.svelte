@@ -19,62 +19,8 @@
   } from 'flowbite-svelte-icons';
   import { slide } from 'svelte/transition';
 	import type { PageServerLoad } from './$types';
-  const membership: {
-      amount: string;
-      title: string;
-      brief: string;
-      description: string[];
-  }[] = [
-        {
-            "amount": "$ 20/year",
-            "title": "Explorer",
-            "brief": "This tier is perfect for those starting their journey in the open-source world or looking to stay informed about industry developments.",
-            "description": [
-                "Access to open-source resources and repositories",
-                "Monthly updates on industry news and trends",
-                "Participation in professional online forums",
-                "Discounts on training courses, webinars, and events",
-                "Opportunity to join live sessions on requested topics"
-            ]
-        },
-        {
-            "amount": "$ 50/year",
-            "title": "Developer",
-            "brief": "Ideal for professionals seeking to deepen their expertise and expand their network within the open-source community.",
-            "description": [
-                "All Explorer tier benefits",
-                "Access to exclusive webinars and virtual workshops",
-                "Free or discounted entry to conferences and networking events",
-                "Priority access to new open-source project releases",
-                "Opportunities to contribute to high-profile open-source projects",
-                "Reduced rates for Linux certification courses "
-            ]
-        },
-        {
-            "amount": "$ 100/year",
-            "title": "Professional",
-            "brief": "This tier is designed for individuals aiming for significant career advancement, offering tailored support and recognition.",
-            "description": [
-                "All Professional benefits",
-                "One-on-one mentorship sessions with experienced IT professionals",
-                "Personalized career development plans and guidance",
-                "Recognition as a Premium Member on the LOS website "
-            ]
-        },
-        {
-            "amount": "$ 200/year",
-            "title": "Executive",
-            "brief": "For those who seek an elite experience, this tier offers unmatched access to premium resources, top-tier networking opportunities, and direct engagement with industry pioneers.",
-            "description": [
-                "All Executive tier benefits",
-                "Exclusive live sessions with renowned instructor Sander Van Vugt",
-                "Early access to high-level training and certification programs",
-                "VIP invitations to global open-source conferences and events",
-                "Personalized introductions to industry leaders and experts",
-                "Priority support and direct access to the Foundation's leadership team"
-            ]
-        }
-    ];
+  let data: {data: PageServerLoad} = $props();
+  const membership = data.data.memberships;
   let openRow: number | null = $state(null);
   let details: {
       amount: string;
@@ -88,12 +34,10 @@
     openRow = openRow === i ? null : i;
   }
 
-  let data: {data: PageServerLoad} = $props();
-
   onMount(() => {
     const typeParam = $page.url.searchParams.get('type');
     if (typeParam) {
-      const foundMembership = membership.find(item => item.title === typeParam);
+      const foundMembership = membership.find((item: { name: string; }) => item.name === typeParam);
       if (foundMembership) {
         details = foundMembership;
         toggleRow(membership.indexOf(foundMembership));
@@ -123,8 +67,8 @@
           <TableBody tableBodyClass="divide-y">
             {#each membership as item, i}
               <TableBodyRow on:click={() => toggleRow(i)}>
-                <TableBodyCell>{item.title}</TableBodyCell>
-                <TableBodyCell>{item.amount}</TableBodyCell>
+                <TableBodyCell>{item.name}</TableBodyCell>
+                <TableBodyCell>{item.currency} {item.amount}</TableBodyCell>
                 <TableBodyCell><PlusOutline /></TableBodyCell>
               </TableBodyRow>
               {#if openRow === i}
@@ -135,10 +79,11 @@
                   <TableBodyCell colspan={4} class="p-0">
                     <div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.title}</h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.brief}</p>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.name}</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.subTitle}</p>
                         <form method="POST">
-                          <input type="hidden" value={item.title} name="type" />
+                          <input type="hidden" value={item.name} name="type" />
+                          <input type="hidden" value={item.id} name="id" />
                           <Button size="sm" pill type="submit">
                             Subscribe <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
                           </Button>
@@ -151,7 +96,7 @@
             {/each}
           </TableBody>
         </Table>
-        <Modal title={details?.title} bind:open={doubleClickModal} autoclose outsideclose>
+        <Modal title={details?.name} bind:open={doubleClickModal} autoclose outsideclose>
           <ImagePlaceholder />
         </Modal>
       </div>

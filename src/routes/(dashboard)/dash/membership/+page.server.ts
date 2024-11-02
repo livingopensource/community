@@ -1,33 +1,83 @@
-import { Subscription } from '$lib/server/databases/pg/memberships.js';
+import { Membership, Subscription } from '$lib/server/databases/pg/memberships.js';
 import { env } from '$env/dynamic/private'
 import crypto from 'crypto'
 import {formatDate} from '$lib/utils';
 import { XMLParser } from 'fast-xml-parser';
 import { redirect } from '@sveltejs/kit';
+import { Session } from '$lib/server/databases/pg/users.js';
 
 export async function load({ parent }) {
     const data = await parent();
     const subscriptions = await Subscription.getUserActiveSubscriptions(data.user.User.id)
+    const memberships = await Membership.getAllMemberships()
   return {
-    subscriptions: subscriptions
+    subscriptions: subscriptions.map(s => s.toJSON()),
+    memberships: memberships.map(m => m.toJSON()),
   };
 }
 
 export const actions = {
-  default: async({request}) => {
+  default: async({request, cookies}) => {
+    const losfCookie = cookies.get("losf");
+    if (losfCookie == null) {
+       return {
+        status: 400,
+        body: {
+            message: 'Invalid session'
+        }
+      }
+    }
+    const user = await Session.getUser(losfCookie);
+    if (user == null) {
+      return {
+        status: 400,
+        body: {
+            message: 'Invalid session'
+        }
+      }
+    }
     let transactionPaymentRequestToken = "1234";
-    const amount: number = 1;
     const data = await request.formData()
     const type = data.get("title")
+    const id = data.get("id")
+    if (id == null) {
+      return {
+        status: 400,
+        body: {
+            message: 'Invalid membership type'
+        }
+      }
+    }
+    const membership = await Membership.getMembership(id.toString())
+    if (membership == null) {
+      return {
+        status: 400,
+        body: {
+            message: 'Invalid membership type'
+        }
+      }
+    }
+
+    const txnId = crypto.randomUUID()
+
+    const subscription = Subscription.createSubscription(user.toJSON().User.id, membership.toJSON().id, membership.toJSON().amount, membership.toJSON().currency, "DPO", txnId, "initialised", "membership subscription fees")
+    if (subscription == null) {
+      return {
+        status: 400,
+        body: {
+            message: 'Invalid membership type'
+        }
+      }
+    }
     const createToken = `
     <?xml version="1.0" encoding="utf-8"?>
     <API3G>
       <CompanyToken>${env.DPO_TOKEN}</CompanyToken>
       <Request>createToken</Request>
       <Transaction>
-        <PaymentAmount>${amount}</PaymentAmount>
-        <PaymentCurrency>ZMW</PaymentCurrency>
-        <CompanyRef>${crypto.randomUUID()}</CompanyRef>
+        <PaymentAmount>${membership.toJSON().amount}</PaymentAmount>
+        <PaymentCurrency>${membership.toJSON().currency}</PaymentCurrency>
+        <CompanyRef>${txnId}</CompanyRef>
         <RedirectURL>${env.DPO_REDIRECT_URL}</RedirectURL>
         <BackURL>${env.DPO_BACK_URL}</BackURL>
         <CompanyRefUnique>1</CompanyRefUnique>
@@ -129,5 +179,5 @@ export const actions = {
 
       redirect(302, `${env.DPO_HOSTED_PAGE}?ID=${transactionPaymentRequestToken}`)
 
-  }
-}
+
+  }}
