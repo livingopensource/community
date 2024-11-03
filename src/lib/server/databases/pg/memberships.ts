@@ -67,6 +67,14 @@ class Subscription extends Model {
             reason: reason
         })
     }
+
+    static getUserSubscriptions(userId: string)  {
+        return Subscription.findAll({
+            where: {
+                UserId: userId
+            }
+        })
+    }
 }
 
 const subscription = Subscription.init({
@@ -80,15 +88,21 @@ const subscription = Subscription.init({
     paid: {type: DataTypes.BOOLEAN, defaultValue: false},
     paymentMethod: {type: DataTypes.STRING},
     transactionId: {type: DataTypes.STRING},
+    externalTransactionId: {type: DataTypes.STRING},
     status: {type: DataTypes.STRING},
     reason: {type: DataTypes.STRING}
 },{
+    defaultScope: {
+        include: {
+            model: Membership
+        }
+    },
     sequelize: DBConn,
     modelName: 'Subscription',
     tableName: "subscriptions"
 });
 
-Membership.hasOne(Subscription)
+Subscription.belongsTo(Membership)
 Subscription.belongsTo(User)
 
 export {membership as Membership}

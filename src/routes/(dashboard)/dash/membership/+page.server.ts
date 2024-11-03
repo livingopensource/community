@@ -10,9 +10,11 @@ export async function load({ parent }) {
     const data = await parent();
     const subscriptions = await Subscription.getUserActiveSubscriptions(data.user.User.id)
     const memberships = await Membership.getAllMemberships()
+    const userSubscriptions = await Subscription.getUserSubscriptions(data.user.User.id)
   return {
     subscriptions: subscriptions.map(s => s.toJSON()),
     memberships: memberships.map(m => m.toJSON()),
+    userSubscriptions: userSubscriptions.map(m => m.toJSON())
   };
 }
 
@@ -60,7 +62,7 @@ export const actions = {
 
     const txnId = crypto.randomUUID()
 
-    const subscription = Subscription.createSubscription(user.toJSON().User.id, membership.toJSON().id, membership.toJSON().amount, membership.toJSON().currency, "DPO", txnId, "initialised", "membership subscription fees")
+    const subscription = await Subscription.createSubscription(user.toJSON().User.id, membership.toJSON().id, membership.toJSON().amount, membership.toJSON().currency, "DPO", txnId, "initialised", "membership subscription fees")
     if (subscription == null) {
       return {
         status: 400,
@@ -165,6 +167,14 @@ export const actions = {
         }
       }
 
+      const subscriptionId: string = await subscription.toJSON().id
+      await subscription.update({
+        externalTransactionId: tokenPayload.API3G.TransToken
+      }, {
+        where: {
+          id: subscriptionId
+        }
+      })
       transactionPaymentRequestToken = tokenPayload.API3G.TransToken
 
       } catch(err) {
