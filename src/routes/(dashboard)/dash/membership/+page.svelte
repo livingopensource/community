@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
+  import { toast } from 'svoast';
   import {
     Table,
     TableBody,
@@ -20,17 +21,18 @@
   } from 'flowbite-svelte-icons';
   import { slide } from 'svelte/transition';
   import moment from 'moment';
-	import type { PageServerLoad } from './$types';
-  let data: {data: PageServerLoad} = $props();
-  const membership = data.data.memberships;
-  const userSubscriptions = data.data.userSubscriptions;
+  import type { ActionData, PageServerLoad } from './$types';
+  let { data, form }: { data: PageServerLoad & { subscriptions: any[], memberships: any[], userSubscriptions: any[] }, form: ActionData } = $props();
+
+  const membership = data.memberships;
+  const userSubscriptions = data.userSubscriptions;
   let openRow: number | null = $state(null);
   let openSubscriptionRow: number | null = $state(null);
   let details: {
-      name: string
-      amount: string;
-      subTitle: string;
-      description: string;
+    name: string;
+    amount: string;
+    subTitle: string;
+    description: string;
   } = $state(membership[0]);
   let doubleClickModal = $state(false);
   let paymentConfirmationModal: boolean = $state(false);
@@ -41,6 +43,10 @@
 
   const toggleSubscriptionRow = (i: number) => {
     openSubscriptionRow = openSubscriptionRow === i ? null : i;
+  }
+
+  function error(node: HTMLElement,message: string) {
+    toast.error(message, {closable: true, infinite: true});
   }
 
   onMount(() => {
@@ -60,6 +66,11 @@
 
 <div class="flex-grow">
   <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
+    {#if form != null}
+      {#if form.status != 200}
+          <input type="hidden" use:error={form.body.message} />
+      {/if}
+    {/if}
     <h1 class="p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
       Membership Details
     </h1>
@@ -160,7 +171,7 @@
         </Table>
       </div>
       <div class="flex-auto w-14">
-        {#if data.data.subscriptions == 0}
+        {#if data.subscriptions.length == 0}
         <h1 class="dark:text-white">
           You don't have an active membership subscription
         </h1>

@@ -35,6 +35,7 @@
 		"sequelize-cli": "^6.6.2",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
+		"svoast": "^2.5.0",
 		"tailwindcss": "^3.4.9",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.0.0",

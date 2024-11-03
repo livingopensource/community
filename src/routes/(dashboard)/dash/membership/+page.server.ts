@@ -40,7 +40,6 @@ export const actions = {
     }
     let transactionPaymentRequestToken = "1234";
     const data = await request.formData()
-    const type = data.get("title")
     const id = data.get("id")
     if (id == null) {
       return {
@@ -109,7 +108,7 @@ export const actions = {
         return {
           status: createTokenRequest.status,
           body: {
-              message: 'Token creation failed for membership of type '+type
+              message: 'Unable to initiate transaction, please try again'
           }
         }
       }
@@ -149,7 +148,7 @@ export const actions = {
         return {
           status: createTokenRequest.status,
           body: {
-              message: 'Token validation failed for membership of type '+type
+              message: 'Membership payment transaction validation failed'
           }
         }
       }
@@ -176,18 +175,14 @@ export const actions = {
         }
       })
       transactionPaymentRequestToken = tokenPayload.API3G.TransToken
-
       } catch(err) {
         console.log(err)
         return {
           status: 400,
           body: {
-              message: 'Token creation failed for membership of '+type
+              message: 'Unable to complete transaction, please try again later'
           }
         }
       }
-
       redirect(302, `${env.DPO_HOSTED_PAGE}?ID=${transactionPaymentRequestToken}`)
-
-
   }}
