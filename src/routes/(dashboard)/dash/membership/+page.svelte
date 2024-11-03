@@ -158,7 +158,11 @@
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.Membership.subTitle}</p>
                         {#if item.paid == false}
                           <Button size="sm" pill outline disabled>
-                            payment {item.status} but not completed
+                            payment {item.status}
+                          </Button>
+                        {:else if item.paid == false && item.status == 'failed'}
+                          <Button size="sm" pill outline disabled>
+                            payment {item.status}
                           </Button>
                         {/if}
                       </Card>

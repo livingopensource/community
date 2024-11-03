@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Op } from "sequelize";
 import { DBConn } from "./init";
 import { User } from "./users";
 
@@ -71,7 +71,19 @@ class Subscription extends Model {
     static getUserSubscriptions(userId: string)  {
         return Subscription.findAll({
             where: {
-                UserId: userId
+                UserId: userId,
+                status: {
+                    [Op.in]: ['initialised', 'succeeded']
+                }
+            }
+        })
+    }
+
+    static getAllPendingSubscriptions() {
+        return Subscription.findAll({
+            where: {
+                paid: false,
+                status: "initialised"
             }
         })
     }
