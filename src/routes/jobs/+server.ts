@@ -55,7 +55,7 @@ export async function GET() {
             }
         }
     }
-    redirect(307, '/dashboard/membership')
+    redirect(307, '/dash/membership')
 }
 
 
@@ -72,7 +72,7 @@ export async function POST() {
             <?xml version="1.0" encoding="utf-8"?>
             <API3G>
               <CompanyToken>${env.DPO_TOKEN}</CompanyToken>
-              <Request>verifyToken</Request>
+              <Request>verifyToken</Request>arthur@kalikiti.net
               <TransactionToken>${txnId}</TransactionToken>
             </API3G>
             `;
@@ -111,5 +111,5 @@ export async function POST() {
             }
         }
     }
-    redirect(307, '/dashboard/membership')
+    redirect(307, '/dash/membership')
 }
