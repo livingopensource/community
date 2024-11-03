@@ -22,7 +22,7 @@
   import { slide } from 'svelte/transition';
   import moment from 'moment';
   import type { ActionData, PageServerLoad } from './$types';
-  let { data, form }: { data: PageServerLoad & { subscriptions: any[], memberships: any[], userSubscriptions: any[] }, form: ActionData } = $props();
+  let { data, form }: { data: PageServerLoad & { subscriptions: any[], memberships: any[], userSubscriptions: any[], dpoHostedPage: string }, form: ActionData } = $props();
 
   const membership = data.memberships;
   const userSubscriptions = data.userSubscriptions;
@@ -92,10 +92,7 @@
                 <TableBodyCell><PlusOutline /></TableBodyCell>
               </TableBodyRow>
               {#if openRow === i}
-                <TableBodyRow on:dblclick={() => {
-                  doubleClickModal = true;
-                  details = item;
-                }}>
+                <TableBodyRow>
                   <TableBodyCell colspan={4} class="p-0">
                     <div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
@@ -147,7 +144,7 @@
                     No
                   {/if}
                 </TableBodyCell>
-                <TableBodyCell>{moment(item.createdAt).format("MMM Do, YYYY")} - {moment(item.createdAt).add(12, 'months').format("MMM Do, YYYY")}</TableBodyCell>
+                <TableBodyCell>{moment(item.createdAt).format("MMM Do, YY")} - {moment(item.createdAt).add(12, 'months').format("YY")}</TableBodyCell>
               </TableBodyRow>
               {#if openSubscriptionRow === i}
                 <TableBodyRow>
@@ -156,11 +153,13 @@
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.Membership.name}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.Membership.subTitle}</p>
-                        {#if item.paid == false}
-                          <Button size="sm" pill outline disabled>
-                            payment {item.status}
+                        {#if item.status == "initialised"}
+                          <Button size="sm" pill outline onclick={() => {
+                            window.location.href = data.dpoHostedPage+"?ID="+item.externalTransactionId
+                          }}>
+                            proceed to complete payment
                           </Button>
-                        {:else if item.paid == false && item.status == 'failed'}
+                        {:else if item.status == 'failed'}
                           <Button size="sm" pill outline disabled>
                             payment {item.status}
                           </Button>

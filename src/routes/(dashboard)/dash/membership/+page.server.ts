@@ -1,4 +1,4 @@
-import { Membership, Subscription } from '$lib/server/databases/pg/memberships.js';
+import { Membership, Subscription } from '$lib/server/databases/pg/memberships';
 import { env } from '$env/dynamic/private'
 import crypto from 'crypto'
 import {formatDate} from '$lib/utils';
@@ -14,7 +14,8 @@ export async function load({ parent }) {
   return {
     subscriptions: subscriptions.map(s => s.toJSON()),
     memberships: memberships.map(m => m.toJSON()),
-    userSubscriptions: userSubscriptions.map(m => m.toJSON())
+    userSubscriptions: userSubscriptions.map(m => m.toJSON()),
+    dpoHostedPage: env.DPO_HOSTED_PAGE
   };
 }
 

@@ -1,4 +1,4 @@
-import { Subscription } from '$lib/server/databases/pg/memberships.js';
+import { Subscription } from '$lib/server/databases/pg/memberships';
 
 export async function load({ parent }) {
     const data = await parent();
