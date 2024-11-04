@@ -24,9 +24,9 @@
     <img src={logoImg} class="me-3 h-6 sm:h-9" alt="LOSF Logo" />
     <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Community</span>
   </NavBrand>
-  <Avatar alt={data?.user.User.firstName+" "+data?.user.User.lastName} border/>
+  <Avatar alt={data?.user.User.firstName+" "+data?.user.User.lastName} border class="cursor-pointer"/>
   <Dropdown>
-	<DropdownHeader>
+	<DropdownHeader onclick={() => window.location.href = "/dash/user"} class="cursor-pointer">
 		<div class="px-4 py-2">
 			<span class="block text-sm text-gray-900 dark:text-white">{data?.user.User.firstName+" "+data?.user.User.lastName}</span>
 			<span class="block truncate text-sm font-medium">{data?.user.User.email}</span>
