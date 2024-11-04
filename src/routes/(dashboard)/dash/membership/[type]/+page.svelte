@@ -1,47 +1,23 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { Editor } from '@tiptap/core';
-	import StarterKit from '@tiptap/starter-kit';
-  import { onMount, onDestroy } from 'svelte';
   import {
-    Table,
-    TableBody,
-    TableBodyCell,
-    TableBodyRow,
-    TableHead,
-    TableHeadCell,
-    ImagePlaceholder,
-    Modal,
-    Card,
-    Button
+    Card
   } from 'flowbite-svelte';
-  import {
-    ArrowRightOutline,
-    PlusOutline
-  } from 'flowbite-svelte-icons';
-  import { slide } from 'svelte/transition';
-  import type { PageServerData } from './$types';
-  
-  export let data: PageServerData;
-  console.log(data)
-  let element: any;
-	let editor: Editor;
-  onMount(() => {
-    editor = new Editor({
-		element: element,
-		extensions: [StarterKit],
-		content: data.membership?.description,
-		onTransaction: () => {
-			// force re-render so `editor.isActive` works as expected
-			editor = editor;
-		},
-	});
-  });
-  onDestroy(() => {
-      if (editor) {
-		editor.destroy();
-	}
-  });
+  import type { PageServerData } from './$types'; 
+  let {data}: {data: PageServerData} = $props();
+  import Editor from '@tinymce/tinymce-svelte';
+  let conf = {
+    height: 500,
+    menubar: false,
+    plugins: [
+      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+      'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
+    ],
+    toolbar: 'undo redo | blocks | ' +
+      'bold italic forecolor | alignleft aligncenter ' +
+      'alignright alignjustify | bullist numlist outdent indent | ' +
+      'removeformat | help',
+  }
 </script>
   <svelte:head>
     <title> LOSF Conference | Dashboard Membership</title>
@@ -53,12 +29,15 @@
         {data.membership.name} Membership Details
       </h1>
       <div class="flex flex-wrap justify-center gap-4 p-5 text-center">
-        <div class="flex-auto sm:w-max md:w-max">
+        <div class="flex-auto sm:w-max md:w-max w-full">
           <h1 class="dark:text-white">Membership Subscriptions</h1>
           <br />
-          <Card>
-            <div bind:this={element}></div>
-          </Card>
+          <Editor
+            licenseKey='gpl'
+            scriptSrc='/tinymce/tinymce.min.js'
+            value={data.membership.description}
+            {conf}
+          />
         </div>
         <div class="flex-auto w-14">
           <h1 class="dark:text-white">
