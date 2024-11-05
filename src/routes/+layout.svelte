@@ -9,5 +9,5 @@
 	height={3} 
 />
 
-<Toasts position="bottom-right" />
+<Toasts position="top-left" />
 <slot />

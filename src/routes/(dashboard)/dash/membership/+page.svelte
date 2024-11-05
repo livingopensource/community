@@ -68,6 +68,9 @@
   <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
     {#if form != null}
       {#if form.status != 200}
+          <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
+            <p class="dark:text-amber-500">{form?.body.message}</p>
+           </div>
           <input type="hidden" use:error={form.body.message} />
       {/if}
     {/if}
