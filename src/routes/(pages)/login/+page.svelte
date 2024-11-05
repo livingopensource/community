@@ -53,6 +53,8 @@
     <br />
     <div class="mb-6"> 
       <A href="/register">Or Register</A>
+      <br />
+      <A href="/forgot-password">Forgot password?</A>
     </div>
     </div>
 </Card>

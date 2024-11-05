@@ -7,6 +7,12 @@ class User extends Model {
       email: email
     }})
   }
+
+  static getByToken(token: string) {
+    return User.findOne({where : {
+      resetToken: token
+    }})
+  }
 }
 
 const user = User.init(
@@ -34,6 +40,7 @@ const user = User.init(
         allowNull: false
       },
       resetToken: {type: DataTypes.STRING},
+      resetTokenExpires: {type: DataTypes.DATE},
       active: {
         type: DataTypes.BOOLEAN, 
         defaultValue: true

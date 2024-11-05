@@ -43,12 +43,11 @@ export const actions = {
                 }
             }
         }
-        const hashedPassword = await bcrypt.hashSync(newPassword, 10);
-        
         try {
-            await user.update({
-                password: hashedPassword
-            })
+            const hashedPassword = await bcrypt.hashSync(newPassword, 10);
+                await user.update({
+                    password: hashedPassword
+                });
         } catch(err) {
             console.error(err);
             return {
