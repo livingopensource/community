@@ -32,7 +32,7 @@
       </div>
       
       <div class="flex flex-wrap justify-center gap-3 p-5 text-center">
-        <Card href="/dash/membership">
+        <Card>
           <LayersOutline size="xl" />
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Stimulate Local Economies
@@ -41,7 +41,7 @@
             Our task is to develop and foster growth of the local digital ecosystem through the use of open source software
           </p>
         </Card>
-        <Card href="/dash/membership">
+        <Card>
           <LayersOutline size="xl" />
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Promoting Inclusive Software
@@ -50,7 +50,7 @@
             Open Source software does not discriminate and provides equal opportunities for everyone. It allows individuals from all backgrounds to contribute, learn, and grow, thereby promoting inclusivity and diversity in the tech community
           </p>
         </Card>
-        <Card href="/dash/membership">
+        <Card>
           <LayersOutline size="xl" />
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Guided Training Process
@@ -59,7 +59,7 @@
             We follow a structured three-step approach to training. Starting with basic education at large events, we move on to more advanced certification for experienced participants, and finally, we establish local knowledge centers to provide ongoing, affordable training.
           </p>
         </Card>
-        <Card href="/dash/membership">
+        <Card>
           <LayersOutline size="xl" />
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Community Building
@@ -68,7 +68,7 @@
             We establish local communities through on-site events where we teach the basics of Open Source software. These events help create a network of local enthusiasts and professionals who continue to meet and grow together, ensuring sustained development and support.
           </p>
         </Card>
-        <Card href="/dash/membership">
+        <Card>
           <LayersOutline size="xl" />
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             International Collaboration
@@ -77,7 +77,7 @@
             We partner with international organizations like ITGilde to bring global expertise to local communities. This collaboration enhances our training programs and ensures that local talent can participate in the worldwide Open Source ecosystem on an equal footing.
           </p>
         </Card>
-        <Card href="/dash/membership">
+        <Card>
           <LayersOutline size="xl" />
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Open Source Consultation
