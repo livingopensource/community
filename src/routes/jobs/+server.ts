@@ -41,7 +41,8 @@ export async function GET() {
             console.log(verifyTokenPayload)
             if (verifyTokenPayload.API3G.Result == "000") {
                 await subscription.update({
-                    status: 'succeeded'
+                    status: 'succeeded',
+                    paid: true,
                 })
             } else if(verifyTokenPayload.API3G.Result == "801" || verifyTokenPayload.API3G.Result == "802" || verifyTokenPayload.API3G.Result == "803"
                 || verifyTokenPayload.API3G.Result == "804" || verifyTokenPayload.API3G.Result == "901" || verifyTokenPayload.API3G.Result == "902" || verifyTokenPayload.API3G.Result == "903"
@@ -104,7 +105,8 @@ export async function POST() {
                 || verifyTokenPayload.API3G.Result == "804" || verifyTokenPayload.API3G.Result == "950"
             ) {
                 await subscription.update({
-                    status: 'failed'
+                    status: 'failed',
+                    paid: true,
                 })
             }else {
                 continue
