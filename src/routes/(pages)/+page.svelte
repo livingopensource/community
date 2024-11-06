@@ -31,7 +31,7 @@
         <h1 class="text-2xl font-bold dark:text-white">What We Do.</h1>
       </div>
       
-      <div class="flex justify-evenly gap-2">
+      <div class="flex flex-wrap justify-center gap-3 p-5 text-center">
         <Card href="/dash/membership">
           <LayersOutline size="xl" />
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
