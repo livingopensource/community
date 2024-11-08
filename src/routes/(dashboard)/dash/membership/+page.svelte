@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
-  import { toast } from 'svoast';
   import {
     Table,
     TableBody,
@@ -19,6 +18,7 @@
     PlusOutline,
     ExclamationCircleOutline
   } from 'flowbite-svelte-icons';
+  import { toasts, ToastContainer, FlatToast }  from "svelte-toasts";
   import { slide } from 'svelte/transition';
   import moment from 'moment';
   import type { ActionData, PageServerLoad } from './$types';
@@ -45,8 +45,19 @@
     openSubscriptionRow = openSubscriptionRow === i ? null : i;
   }
 
-  function error(node: HTMLElement,message: string) {
-    toast.error(message, {closable: true, infinite: true});
+  const errorToast = (p0: HTMLDivElement, message: string) => {
+    toasts.add({
+      title: 'UNable to process payment',
+      description: message,
+      duration: 16000, // 0 or negative to avoid auto-remove
+      placement: 'center-center',
+      type: 'error',
+			showProgress: true,
+      onClick: () => {},
+      onRemove: () => {},
+      // component: BootstrapToast, // allows to override toast component/template per toast
+    });
+
   }
 
   onMount(() => {
@@ -64,6 +75,10 @@
   <title> LOSF Conference | Dashboard Membership</title>
 </svelte:head>
 
+<ToastContainer let:data={data}>
+  <FlatToast {data}  />
+</ToastContainer>
+
 <div class="flex-grow">
   <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
     {#if form != null}
@@ -71,7 +86,7 @@
           <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
             <p class="dark:text-amber-500">{form?.body.message}</p>
            </div>
-          <input type="hidden" use:error={form.body.message} />
+          <input type="hidden" use:errorToast={form.body.message} />
       {/if}
     {/if}
     <h1 class="p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">

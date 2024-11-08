@@ -7,20 +7,35 @@
       A
   } from 'flowbite-svelte'
 
-  import {
-      EnvelopeSolid,
-      UserAddSolid,
-      LockSolid
-  } from 'flowbite-svelte-icons';
+  import { toasts, ToastContainer, FlatToast }  from "svelte-toasts";
 
   import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();
+
+  const errorToast = (p0: HTMLDivElement, message: string) => {
+    toasts.add({
+      title: 'Invalid Credentials',
+      description: message,
+      duration: 16000, // 0 or negative to avoid auto-remove
+      placement: 'center-center',
+      type: 'error',
+			showProgress: true,
+      onClick: () => {},
+      onRemove: () => {},
+      // component: BootstrapToast, // allows to override toast component/template per toast
+    });
+
+  }
 </script>
 
 <svelte:head>
   <title> Log In  | LOSF Community </title>
 </svelte:head>
+
+<ToastContainer let:data={data}>
+  <FlatToast {data}  />
+</ToastContainer>
 
 <div class="flex-grow">
   <br />
@@ -40,7 +55,7 @@
         {#if form?.body?.messages}
           <div class="error">
             {#each form.body.messages as error}
-              <div class="error">
+              <div class="error" use:errorToast={error}>
                 <p class="dark:text-red-600">{error}</p>
               </div>
             {/each}
@@ -57,5 +72,5 @@
       <A href="/forgot-password">Forgot password?</A>
     </div>
     </div>
-</Card>
+  </Card>
 </div>

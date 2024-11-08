@@ -4,6 +4,6 @@ export async function load({ parent }) {
     const data = await parent();
     const subscriptions = await Subscription.getUserActiveSubscriptions(data.user.User.id)
   return {
-    subscription: subscriptions
+    subscription: subscriptions.map(m => m.toJSON())
   };
 }

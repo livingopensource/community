@@ -1,6 +1,5 @@
 <script>
     import NavigationLoader from "$lib/components/NavigationLoader.svelte";
-	import { Toasts } from 'svoast';
 
 </script>
 <NavigationLoader 
@@ -9,5 +8,4 @@
 	height={3} 
 />
 
-<Toasts position="top-left" />
 <slot />

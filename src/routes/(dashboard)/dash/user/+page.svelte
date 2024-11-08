@@ -41,7 +41,7 @@
                 {form.body.message}
             </div>
             {/if}
-            <div class="m-10  flex flex-col justify-start max-w-xl">
+            <div class="m-1 flex flex-col justify-start max-w-xl">
                 <form method="post">
                     <div class="mb-6">
                         <Label for="input-group-1" class="block mb-2 text-left">Current Password</Label>

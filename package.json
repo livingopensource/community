@@ -36,7 +36,6 @@
 		"sequelize-cli": "^6.6.2",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
-		"svoast": "^2.5.0",
 		"tailwindcss": "^3.4.9",
 		"typescript": "^5.6.3",
 		"typescript-eslint": "^8.0.0",
@@ -56,7 +55,7 @@
 		"pg": "^8.13.1",
 		"pg-hstore": "^2.3.4",
 		"sequelize": "^6.37.5",
-		"svelte-email": "^0.0.4",
+		"svelte-toasts": "^1.1.2",
 		"tinymce": "^7.4.1",
 		"ts-node": "^10.9.2",
 		"uuid": "^11.0.2"

@@ -26,8 +26,8 @@
   <Carousel transition={scaleAnimation} {images} duration={15000} imgClass="grayscale" />
   <div class="flex flex-col justify-center items-center px-6 mx-auto xl:px-0">
   
-    <div class="container p-10">
-      <div>
+    <div class="container p-1">
+      <div class="flex justify-center">
         <h1 class="text-2xl font-bold dark:text-white">What We Do.</h1>
       </div>
       

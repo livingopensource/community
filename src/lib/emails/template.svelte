@@ -1,6 +1,4 @@
 <script>
-	import { Button, Hr, Html, Text } from 'svelte-email';
-
 	export let name = 'World';
 	export let content = 'Welcome to Living Open Source Foundation';
 </script>
