@@ -33,7 +33,7 @@
 		</div>
 	</DropdownHeader>
 	<DropdownItem onclick={() => logOutModal = true}>
-		<Button pill outline>Sign Out  <ArrowRightToBracketOutline /> </Button>
+		<Button pill outline>Sign Out  &nbsp;<ArrowRightToBracketOutline /> </Button>
 	</DropdownItem>
   </Dropdown>
 </Navbar>
@@ -43,7 +43,7 @@
     <ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to log out of this account?</h3>
     <form action="/dash?/logout" method="POST">
-		<Button pill type="submit" color="red" class="me-2">Yes, I'm sure</Button>
+		<Button pill type="submit" class="me-2">Yes, I'm sure</Button>
 	</form>
   </div>
 </Modal>

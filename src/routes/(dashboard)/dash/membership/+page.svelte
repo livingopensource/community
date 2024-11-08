@@ -47,7 +47,7 @@
 
   const errorToast = (p0: HTMLDivElement, message: string) => {
     toasts.add({
-      title: 'UNable to process payment',
+      title: 'Unable to process payment',
       description: message,
       duration: 16000, // 0 or negative to avoid auto-remove
       placement: 'center-center',
@@ -126,7 +126,7 @@
                             <form method="POST">
                               <input type="hidden" value={item.name} name="type" />
                               <input type="hidden" value={item.id} name="id" />
-                              <Button pill type="submit" color="red" class="me-2">Proceed</Button>
+                              <Button pill type="submit" class="me-2">Proceed</Button>
                             </form>
                           </div>
                         </Modal>
