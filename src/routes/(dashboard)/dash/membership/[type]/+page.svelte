@@ -25,48 +25,21 @@
       'alignright alignjustify | bullist numlist outdent indent | ' +
       'removeformat | emoticons | fullscreen'
   }
-  let membershipData: {
-    editingObject: string,
-    name: string,
-    title: string,
-    description: string,
-    amount: number
-  } = $state({
-    editingObject: 'secription',
-    name: data.membership.name,
-    title: data.membership.subTitle,
-    description: data.membership.description,
-    amount: data.membership.amount,
-  });
-  let content = $state(data.membership.content);
+
+  let content = $state(null)
+  let title = $state(null)
+  let description = $state(null)
+  let amount = $state(null)
+  let name = $state(null)
+
   onMount(() => {
-    membershipData = {
-    editingObject: 'secription',
-    name: data.membership.name,
-    title: data.membership.subTitle,
-    description: data.membership.description,
-    amount: data.membership.amount,
-  }
+    name = data.membership.name
+    title = data.membership.subTitle
+    description = data.membership.description
+    amount = data.membership.amount
+    content = data.membership.name
   })
 
-  function debounceEdit(data: string) {
-   switch (membershipData.editingObject) {
-     case 'name':
-       membershipData.name = data;
-       console.log(data+" "+membershipData.name+" "+membershipData.editingObject);
-       return membershipData
-     case 'title':
-       membershipData.title = data;
-       return membershipData
-     case 'description':
-       membershipData.description = data;
-       return membershipData
-     default:
-       return membershipData;
-   }
-  }
-
-  // membershipData = $derived(debounceEdit(content))
 </script>
   <svelte:head>
     <title> LOSF Conference | Dashboard Membership</title>
@@ -85,49 +58,39 @@
             cssClass="material-classic"
             licenseKey='gpl'
             scriptSrc='/tinymce/tinymce.min.js'
-            value={content}
+            bind:value={content}
             {conf}
           />
+          
         </div>
         <div class="flex-auto w-14">
           <Card class="text-left">
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {membershipData.name}
+                  {@html name}
                   <EditOutline onclick={()=> {
-                    content = membershipData.name;
-                    membershipData.editingObject = 'name';
+                    content = name
                   }}/>
               </h5>
               
               <p class="mb-5 p-5 font-xs text-gray-700 dark:text-gray-400">
-                  {membershipData.title}
+                  {@html title}
                   <EditOutline onclick={()=> {
-                    content = membershipData.title
-                    membershipData.editingObject = 'title';
+                    content = title
                   }}/>
               </p>
               
-              <Badge rounded large color="dark" class="text-2xl font-bold">{membershipData.amount}</Badge>
+              <Badge rounded large color="dark" class="text-2xl font-bold">{amount}</Badge>
               <EditOutline onclick={()=> {
-                content = membershipData.amount
-                membershipData.editingObject = 'amount';
+                content = amount
               }}/>
               <p class="mt-5 font-normal text-gray-700 dark:text-gray-400">
-                  {membershipData.description}
+                  {@html description}
                   <EditOutline onclick={()=> {
-                    content = membershipData.description
-                    membershipData.editingObject = 'description';
+                    content = description
                   }}/>
               </p>
               <br />
           </Card>
-          <h1 class="dark:text-white">
-            You don't have an active membership subscription
-          </h1>
-          <br />
-            <div class="flex justify-center">
-              <enhanced:img src="/src/lib/assets/images/404.svg" alt="error" />
-            </div>
         </div>
       </div>
     </div>
