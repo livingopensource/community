@@ -27,6 +27,7 @@
   }
 
   let content = $state(null)
+  let type = $state("title")
   let title = $state(null)
   let description = $state(null)
   let amount = $state(null)
@@ -38,6 +39,25 @@
     description = data.membership.description
     amount = data.membership.amount
     content = data.membership.name
+  })
+
+  $effect(() => {
+    switch (type) {
+      case "title":
+        title = content
+        break;
+      case "description":
+        description = content
+        break;
+      case "amount":
+        amount = content
+        break;
+      case "name":
+        name = content
+        break;
+      default:
+        break;
+    }
   })
 
 </script>
@@ -68,6 +88,7 @@
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {@html name}
                   <EditOutline onclick={()=> {
+                    type = "name"
                     content = name
                   }}/>
               </h5>
@@ -75,17 +96,20 @@
               <p class="mb-5 p-5 font-xs text-gray-700 dark:text-gray-400">
                   {@html title}
                   <EditOutline onclick={()=> {
+                    type = "title"
                     content = title
                   }}/>
               </p>
               
               <Badge rounded large color="dark" class="text-2xl font-bold">{amount}</Badge>
               <EditOutline onclick={()=> {
+                type = "amount"
                 content = amount
               }}/>
               <p class="mt-5 font-normal text-gray-700 dark:text-gray-400">
                   {@html description}
                   <EditOutline onclick={()=> {
+                    type = "description"
                     content = description
                   }}/>
               </p>
