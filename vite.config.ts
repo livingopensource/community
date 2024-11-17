@@ -8,13 +8,19 @@ export default defineConfig({
 		enhancedImages(),
 		viteStaticCopy({
 		  targets: [
-		    { src: 'node_modules/tinymce/*', dest: 'static/tinymce' }
+		    { src: 'node_modules/tinymce/*', dest: 'static/tinymce' },
+			{ src: 'scrollbar.css', dest: '' },
+			{ src: 'serviceWorker.js', dest: '' },
+			{ src: 'login.html', dest: '' },
+			{ src: 'assets/', dest: '' },
+			{ src: 'documents/', dest: '' }
 		  ]
 		}),
 		sveltekit()
 	],
 	server: {
-		host: '0.0.0.0'
+		host: '0.0.0.0',
+		port: 3000
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']

@@ -26,12 +26,12 @@
       'removeformat | emoticons | fullscreen'
   }
 
-  let content = $state(null)
+  let content = $state("")
   let type = $state("title")
-  let title = $state(null)
-  let description = $state(null)
-  let amount = $state(null)
-  let name = $state(null)
+  let title = $state("")
+  let description = $state("")
+  let amount = $state("")
+  let name = $state("")
 
   onMount(() => {
     name = data.membership.name
