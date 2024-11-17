@@ -4,7 +4,7 @@ const normal= "\x1b[0m";
 export const introMessage = [
 	"+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
 	"|                                                                             |",
-	"| Living Open Source Foundation Linux Playground: WebVM 2.0                   |",
+	"| Living Open Source Foundation Linux Playground                              |",
 	"|                                                                             |",
 	"+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
 	""

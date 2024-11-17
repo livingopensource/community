@@ -1,10 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
-	import Nav from '$lib/components/NavBar.svelte';
-	import SideBar from '$lib/components/SideBar.svelte';
-	import '$lib/global.css';
+	import '$lib/components/global.css';
 	import '@xterm/xterm/css/xterm.css'
-	import '@fortawesome/fontawesome-free/css/all.min.css'
 	import { networkInterface, startLogin } from '$lib/networks.js'
 	import { cpuActivity, diskActivity, cpuPercentage, diskLatency } from '$lib/activities.js'
 	import { introMessage, errorMessage, unexpectedErrorMessage } from '$lib/messages.js'
@@ -17,10 +14,11 @@
 	 * @type {((arg0: number) => void) | null}
 	 */
 	 export let processCallback = null;
-	/**
-	 * @type {null}
+
+	 /**
+	 * @type {string}
 	 */
-	 export let cacheId = null;
+	  export let cacheId;
 	/**
 	 * @type {any[]}
 	 */
@@ -209,6 +207,7 @@
 			mult = minWidth / displayWidth;
 		if(displayHeight < minHeight)
 			mult = Math.max(mult, minHeight / displayHeight);
+		// @ts-ignore
 		cx.setKmsCanvas(display, displayWidth * mult, displayHeight * mult);
 	}
 	var curInnerWidth = 0;
@@ -220,7 +219,9 @@
 			return;
 		curInnerWidth = window.innerWidth;
 		curInnerHeight = window.innerHeight;
+		// @ts-ignore
 		term.options.fontSize = computeXTermFontSize();
+		// @ts-ignore
 		fitAddon.fit();
 		const display = document.getElementById("display");
 		if(display)
@@ -231,19 +232,30 @@
 		const { Terminal } = await import('@xterm/xterm');
 		const { FitAddon } = await import('@xterm/addon-fit');
 		const { WebLinksAddon } = await import('@xterm/addon-web-links');
+		// @ts-ignore
 		term = new Terminal({cursorBlink:true, convertEol:true, fontFamily:"monospace", fontWeight: 400, fontWeightBold: 700, fontSize: computeXTermFontSize()});
 		fitAddon = new FitAddon();
+		// @ts-ignore
 		term.loadAddon(fitAddon);
 		var linkAddon = new WebLinksAddon();
+		// @ts-ignore
 		term.loadAddon(linkAddon);
 		const consoleDiv = document.getElementById("console");
+		// @ts-ignore
 		term.open(consoleDiv);
+		// @ts-ignore
 		term.scrollToTop();
+		// @ts-ignore
 		fitAddon.fit();
 		window.addEventListener("resize", handleResize);
+		// @ts-ignore
 		term.focus();
+		// @ts-ignore
 		term.onData(readData);
 		// Avoid undesired default DnD handling
+		/**
+		 * @param {{ preventDefault: () => void; stopPropagation: () => void; }} e
+		 */
 		function preventDefaults (e) {
 			e.preventDefault()
 			e.stopPropagation()
@@ -269,10 +281,14 @@
 		catch(e)
 		{
 			printMessage(unexpectedErrorMessage);
+			// @ts-ignore
 			printMessage([e.toString()]);
 			return;
 		}
 	}
+	/**
+	 * @param {number} vt
+	 */
 	function handleActivateConsole(vt)
 	{
 		if(curVT == vt)
@@ -297,21 +313,25 @@
 	{
 		const CheerpX = await import('@leaningtech/cheerpx');
 		var blockDevice = null;
+		// @ts-ignore
 		switch(configObj.diskImageType)
 		{
 			case "cloud":
 				try
 				{
+					// @ts-ignore
 					blockDevice = await CheerpX.CloudDevice.create(configObj.diskImageUrl);
 				}
 				catch(e)
 				{
 					// Report the failure and try again with plain HTTP
 					var wssProtocol = "wss:";
+					// @ts-ignore
 					if(configObj.diskImageUrl.startsWith(wssProtocol))
 					{
 						// WebSocket protocol failed, try agin using plain HTTP
 						plausible("WS Disk failure");
+						// @ts-ignore
 						blockDevice = await CheerpX.CloudDevice.create("https:" + configObj.diskImageUrl.substr(wssProtocol.length));
 					}
 					else
@@ -322,15 +342,19 @@
 				}
 				break;
 			case "bytes":
+				// @ts-ignore
 				blockDevice = await CheerpX.HttpBytesDevice.create(configObj.diskImageUrl);
 				break;
 			case "github":
+				// @ts-ignore
 				blockDevice = await CheerpX.GitHubDevice.create(configObj.diskImageUrl);
 				break;
 			default:
 				throw new Error("Unrecognized device type");
 		}
+		// @ts-ignore
 		blockCache = await CheerpX.IDBDevice.create(cacheId);
+		// @ts-ignore
 		var overlayDevice = await CheerpX.OverlayDevice.create(blockDevice, blockCache);
 		var webDevice = await CheerpX.WebDevice.create("");
 		var documentsDevice = await CheerpX.WebDevice.create("documents");
@@ -353,29 +377,39 @@
 		];
 		try
 		{
+			// @ts-ignore
 			cx = await CheerpX.Linux.create({mounts: mountPoints, networkInterface: networkInterface});
 		}
 		catch(e)
 		{
 			printMessage(errorMessage);
+			// @ts-ignore
 			printMessage([e.toString()]);
 			return;
 		}
+		// @ts-ignore
 		cx.registerCallback("cpuActivity", cpuCallback);
+		// @ts-ignore
 		cx.registerCallback("diskActivity", hddCallback);
+		// @ts-ignore
 		cx.registerCallback("diskLatency", latencyCallback);
+		// @ts-ignore
 		cx.registerCallback("processCreated", handleProcessCreated);
+		// @ts-ignore
 		term.scrollToBottom();
+		// @ts-ignore
 		cxReadFunc = cx.setCustomConsole(writeData, term.cols, term.rows);
 		const display = document.getElementById("display");
 		if(display)
 		{
 			setScreenSize(display);
+			// @ts-ignore
 			cx.setActivateConsole(handleActivateConsole);
 		}
 		// Run the command in a loop, in case the user exits
 		while (true)
 		{
+			// @ts-ignore
 			await cx.run(configObj.cmd, configObj.args, configObj.opts);
 		}
 	}
@@ -383,7 +417,9 @@
 	async function handleConnect()
 	{
 		const w = window.open("login.html", "_blank");
+		// @ts-ignore
 		await cx.networkLogin();
+		// @ts-ignore
 		w.location.href = await startLogin();
 	}
 	async function handleReset()
@@ -394,20 +430,24 @@
 		await blockCache.reset();
 		location.reload();
 	}
+
+
+	/**
+	 * @param {string} arg0
+	 */
+	function plausible(arg0) {
+		throw new Error('Function not implemented.');
+	}
 </script>
 
 <main class="relative w-full h-full">
-	<Nav />
-	<div class="absolute top-10 bottom-0 left-0 right-0">
-		<SideBar on:connect={handleConnect} on:reset={handleReset}>
-			<slot></slot>
-		</SideBar>
-		{#if configObj.needsDisplay}
+	<div class="absolute top-0 bottom-0 left-0 right-0">
+		{#if configObj && configObj.needsDisplay}
 			<div class="absolute top-0 bottom-0 left-14 right-0">
 				<canvas class="w-full h-full cursor-none" id="display"></canvas>
 			</div>
 		{/if}
-		<div class="absolute top-0 bottom-0 left-14 right-0 p-1 scrollbar" id="console">
+		<div class="absolute top-0 bottom-0 left-14 right-14 p-1 scrollbar" id="console">
 		</div>
 	</div>
 </main>

@@ -38,7 +38,7 @@
     title = data.membership.subTitle
     description = data.membership.description
     amount = data.membership.amount
-    content = data.membership.name
+    content = data.membership.subTitle
   })
 
   $effect(() => {
@@ -67,10 +67,10 @@
   
   <div class="flex-grow">
     <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
-      <h1 class="p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
+      <h1 class="mx-10 p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
         {data.membership.name} Membership Details
       </h1>
-      <div class="flex flex-wrap justify-center gap-4 p-5 text-center">
+      <div class="mx-10 flex flex-wrap justify-center gap-4 p-5 text-center">
         <div class="flex-auto sm:w-max md:w-max w-full">
           <h1 class="dark:text-white">Membership Subscriptions</h1>
           <br />

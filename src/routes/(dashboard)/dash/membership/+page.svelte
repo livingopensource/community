@@ -89,7 +89,7 @@
           <input type="hidden" use:errorToast={form.body.message} />
       {/if}
     {/if}
-    <h1 class="p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
+    <h1 class="mx-10 p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
       Membership Details
     </h1>
     <div class="flex flex-wrap justify-center gap-4 p-5 text-center">
