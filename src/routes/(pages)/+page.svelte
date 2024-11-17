@@ -47,7 +47,7 @@
             Promoting Inclusive Software
           </h5>
           <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-            Open Source software does not discriminate and provides equal opportunities for everyone. It allows individuals from all backgrounds to contribute, learn, and grow, thereby promoting inclusivity and diversity in the tech community
+            Open Source software does not discriminate and provides equal opportunities for everyone. It allows individuals from all backgrounds to contribute, learn, and grow, thereby promoting inclusivity and diversity in the tech community.
           </p>
         </Card>
         <Card>
