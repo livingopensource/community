@@ -38,7 +38,7 @@
             Stimulate Local Economies
           </h5>
           <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-            Our task is to develop and foster growth of the local digital ecosystem through the use of open source software
+            Our task is to develop and foster growth of the local digital ecosystem through the use of open source software.
           </p>
         </Card>
         <Card>
@@ -83,7 +83,7 @@
             Open Source Consultation
           </h5>
           <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-            OOur local knowledge centers serve as one-stop shops for all things Open Source. They offer consulting services to local enterprises, governments, and non-profit organizations, helping them transition to and benefit from Open Source solutions.
+            Our local knowledge centers serve as one-stop shops for all things Open Source. They offer consulting services to local enterprises, governments, and non-profit organizations, helping them transition to and benefit from Open Source solutions.
           </p>
         </Card>
       </div>
