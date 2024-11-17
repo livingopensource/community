@@ -19,8 +19,7 @@ export default defineConfig({
 		  targets: [
 		    { src: 'node_modules/tinymce/*', dest: 'static/tinymce' },
 			{ src: 'scrollbar.css', dest: '' },
-			{ src: 'serviceWorker.js', dest: '' },
-			{ src: 'login.html', dest: '' }
+			{ src: 'serviceWorker.js', dest: '' }
 		  ]
 		}),
 		sveltekit()

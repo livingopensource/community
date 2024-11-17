@@ -18,7 +18,7 @@
 
 <svelte:head>
   <script src="/serviceWorker.js"></script>
-  <title> LOSF Conference | Dashboard Meet Ups</title>
+  <title> LOSF Conference | Dashboard Playground</title>
 </svelte:head>
 
 <div class="flex-grow">
