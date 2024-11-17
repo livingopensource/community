@@ -15,6 +15,12 @@
     	}
     }
 </script>
+
+<svelte:head>
+  <script src="/serviceWorker.js"></script>
+  <title> LOSF Conference | Dashboard Meet Ups</title>
+</svelte:head>
+
 <div class="flex-grow">
     <div class="flex flex-col justify-center px-6 mx-auto xl:px-0 h-full">
         <h1 class="mx-10 p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
