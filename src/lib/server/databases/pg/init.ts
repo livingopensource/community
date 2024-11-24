@@ -4,8 +4,11 @@ import { env } from '$env/dynamic/private';
 const sequelize = new Sequelize(env.DBName, env.User, env.Password, {
     host: env.Host,
     dialect: 'postgres',
-    ssl: true,
-    native: true,
+    dialectOptions: {
+        ssl: {
+            rejectUnauthorized: false
+        }
+      },
 })
 
 export {sequelize as DBConn}
