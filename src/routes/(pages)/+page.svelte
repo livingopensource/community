@@ -7,12 +7,12 @@
     export const images = [
     {
       alt: 'Team Work',
-      src: 'https://i0.wp.com/livingopensource.org/wp-content/uploads/2024/06/Living-Open-Source-Event-Kenya-2019-scaled.jpg?fit=2560%2C1920&ssl=1',
+      src: '/slide-1.jpg',
       title: 'Colaboration',
     },
     {
       alt: 'Team Work',
-      src: 'https://i0.wp.com/livingopensource.org/wp-content/uploads/2024/05/IMG-20181221-WA0077.jpg?fit=1600%2C1200&ssl=1',
+      src: '/slide-2.jpg',
       title: 'Togetherness'
     }
   ];
