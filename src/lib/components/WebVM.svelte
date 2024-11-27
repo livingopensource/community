@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import '$lib/components/global.css';
 	import '@xterm/xterm/css/xterm.css'
 	import { networkInterface, startLogin } from '$lib/networks.js'
@@ -413,7 +413,40 @@
 			await cx.run(configObj.cmd, configObj.args, configObj.opts);
 		}
 	}
+
+	async function cleanup() {
+		// Remove the resize event listener
+		window.removeEventListener("resize", handleResize);
+
+		// Clean up the terminal if initialized
+		if (term) {
+			// @ts-ignore
+			term.dispose(); // Dispose terminal to free resources
+			term = null; // Clear the reference
+		}
+
+		// Clear interval for CPU activity cleanup
+		if (activityEventsInterval) {
+			clearInterval(activityEventsInterval);
+			activityEventsInterval = 0;
+		}
+
+		// Reset any custom cache or state if applicable
+		if (blockCache) {
+			await blockCache.reset();
+		}
+
+		// Reset other global states if needed
+		cxReadFunc = null;
+		curVT = 0;
+		processCount = 0;
+		cpuActivityEvents = [];
+		diskLatencies = [];
+		handleReset()
+	}
+
 	onMount(initTerminal);
+	onDestroy(cleanup);
 	async function handleConnect()
 	{
 		const w = window.open("login.html", "_blank");
