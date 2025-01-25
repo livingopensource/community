@@ -43,14 +43,6 @@
               Get to network and connect with the rest of the community during and after meet ups
           </p>
       </Card>
-      <Card href="/dash/playground">
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-             Linux Playground
-          </h5>
-          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-              A Linux playground to learn and test your skills. Let your imagination run wild.
-          </p>
-      </Card>
     </div>
   </div>
 </div>
