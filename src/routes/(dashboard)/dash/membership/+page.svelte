@@ -192,7 +192,7 @@
         </Table>
       </div>
       <div class="flex-auto w-14">
-        {#if data.subscriptions.length == 0}
+        {#if !data.subscriptions || data.subscriptions.length == 0}
         <h1 class="dark:text-white">
           You don't have an active membership subscription
         </h1>

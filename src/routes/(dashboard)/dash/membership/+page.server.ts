@@ -5,16 +5,25 @@ import {formatDate} from '$lib/utils';
 import { XMLParser } from 'fast-xml-parser';
 import { redirect } from '@sveltejs/kit';
 import { Session } from '$lib/server/databases/pg/users.js';
+import { userPaidSubscriptions, userSubscriptions } from '$lib/server/databases/subscriptions';
+import { memberships } from '$lib/server/databases/memberships';
 
-export async function load({ parent }) {
-    const data = await parent();
-    const subscriptions = await Subscription.getUserActiveSubscriptions(data.user.User.id)
-    const memberships = await Membership.getAllMemberships()
-    const userSubscriptions = await Subscription.getUserSubscriptions(data.user.User.id)
+export async function load(event) {
+  const session = await event.locals.auth();
+
+  if (!session?.user) {
+          redirect(303, `/signin`);
+  }
+
+  if (!session.user.email) throw redirect(303, "/signin");
+
+    const subscriptions = await userPaidSubscriptions(session.user.email)
+    const membershipsTiers = await memberships();
+    const usersSubscriptions = await userSubscriptions(session.user.email)
   return {
-    subscriptions: subscriptions.map(s => s.toJSON()),
-    memberships: memberships.map(m => m.toJSON()),
-    userSubscriptions: userSubscriptions.map(m => m.toJSON()),
+    subscriptions,
+    memberships: membershipsTiers,
+    userSubscriptions: usersSubscriptions,
     dpoHostedPage: env.DPO_HOSTED_PAGE
   };
 }
