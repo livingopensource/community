@@ -5,7 +5,7 @@
   let email: string = $state("");
 </script>
 
-<div class="flex-grow mt-10">
+<div class="flex items-center justify-center min-h-screen">
     <Card size={'lg'} class="container mx-auto">
       <div class="m-10  flex flex-col justify-center max-w-xl">
       <h2 class="justify-center mb-10"> Sign In </h2>
@@ -15,7 +15,11 @@
           <SignIn provider="nodemailer" class="p-4">
             <span slot="submitButton">
               <input type="hidden" name="email"  bind:value={email} />
-              <Button pill>Sign In with Email</Button>
+              {#if email == null || email == ""}
+                <Button pill disabled >Sign In with Email</Button>
+              {:else}
+                <Button pill>Sign In with Email</Button>
+              {/if}
             </span>
           </SignIn>
         </div>

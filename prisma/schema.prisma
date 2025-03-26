@@ -145,7 +145,7 @@ model Subscription {
 
 model User {
   id                String          @id @default(cuid())
-  name              String          @db.VarChar(255)
+  name              String?          @db.VarChar(255)
   email             String          @unique @db.VarChar(255)
   password          String?
   image             String?

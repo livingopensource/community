@@ -24,7 +24,11 @@
     <img src={logoImg} class="me-3 h-6 sm:h-9" alt="LOSF Logo" />
     <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Community</span>
   </NavBrand>
+  {#if data?.user.image != null}
   <Avatar alt={data?.user.name ?? "user"} src={data?.user.image ?? "NA"} border class="cursor-pointer"/>
+  {:else}
+  <Avatar alt={data?.user.name ?? "user"} border class="cursor-pointer"/>
+  {/if}
   <Dropdown>
 	<DropdownHeader onclick={() => window.location.href = "/dash/user"} class="cursor-pointer">
 		<div class="px-4 py-2">

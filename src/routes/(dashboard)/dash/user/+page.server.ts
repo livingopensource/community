@@ -1,67 +1,41 @@
-import { Session } from "$lib/server/databases/pg/users";
-import bcrypt from 'bcrypt';
+import { redirect } from '@sveltejs/kit';
+import prisma from "$lib/server/databases/prisma"
+import { fail } from 'assert';
 
 export const actions = {
-	default: async ({ cookies, request }) => {
-        const losfCookie = cookies.get("losf");
-        if (losfCookie == null) {
-           return {
+	default: async ({ request, locals }) => {
+        const session = await locals.auth()
+        if (!session?.user) redirect(302, "/signin")
+
+        if (!session.user.email) fail("Unable to get user email address")
+        
+        const data = await request.formData();
+        const name = data.get("name")?.toString()
+
+        if (!name) return fail(400, {
+            message: "Name is required"
+        })
+
+        const user = await prisma.user.update({
+            where: {
+                email: session.user.email
+            },
+            data: {
+                name: name
+            }
+        })
+
+        if (user.id == null) return {
             status: 400,
             body: {
-                message: 'Invalid session'
-            }
-          }
-        }
-        const user = await Session.getUser(losfCookie);
-        if (user == null) {
-          return {
-            status: 400,
-            body: {
-                message: 'Invalid session'
-            }
-          }
-        }
-        const data = await request.formData()
-        const currentPassword = data.get("current-password")
-        const newPassword = data.get("password")
-
-        if (typeof currentPassword !== 'string' || typeof newPassword !== 'string') {
-            return {
-                status: 400,
-                body: {
-                    message: 'Invalid password'
-                }
-            }
-        }
-
-        const valid = await bcrypt.compare(currentPassword, user.toJSON().User.password);
-        if (!valid) {
-            return {
-                status: 400,
-                body: {
-                    message: 'Invalid password'
-                }
-            }
-        }
-        try {
-            const hashedPassword = await bcrypt.hashSync(newPassword, 10);
-                await user.update({
-                    password: hashedPassword
-                });
-        } catch(err) {
-            console.error(err);
-            return {
-                status: 400,
-                body: {
-                    message: 'Invalid password'
-                }
+                message: "unable to update user details"
             }
         }
 
         return {
             status: 200,
             body: {
-                message: 'Password changed'
+                message: 'Name updated'
             }
         }
 
