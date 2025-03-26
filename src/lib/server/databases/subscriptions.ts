@@ -2,7 +2,7 @@ import prisma from "$lib/server/databases/prisma";
 
 
 export async function userPaidSubscriptions(email: string) {
-    return await prisma.users.findUnique({
+    return await prisma.user.findUnique({
         where: {
             email: email,
         },
@@ -17,7 +17,7 @@ export async function userPaidSubscriptions(email: string) {
 }
 
 export async function userSubscriptions(email: string) {
-    return await prisma.users.findUnique({
+    return await prisma.user.findUnique({
         where: {
             email: email,
         },
