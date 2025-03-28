@@ -74,3 +74,22 @@ export async function updateSubscription(id: string, status: string, reason: str
         }
     })
 }
+
+export async function pendingSubscriptions() {
+    return await prisma.subscription.findMany({
+        where: {
+            status: "initialised"
+        }
+    })
+}
+
+export async function updateSubscriptionStatus(id: string, status: string) {
+    return await prisma.subscription.update({
+        where: {
+            id: id
+        },
+        data: {
+            status: status
+        }
+    })
+}
