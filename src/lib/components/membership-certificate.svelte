@@ -1,5 +1,9 @@
 <script lang="ts">
     export let name: string = "Kunda Kinte"
+    export let membership: string = "Gold"
+    export let membershipID: string = "1234567890"
+    export let date: string = "2023-07-15"
+    export let signature: string = "Santos V. Chibenga"
 </script>
 
 <svelte:head>
@@ -28,20 +32,20 @@
             <h2 class="text-2xl md:text-3xl roboto font-semibold text-black-700 mb-2">
                 {name}
             </h2>
-            <p class="text-md md:text-lg roboto text-gray-600">For valued membership in</p>
+            <p class="text-md md:text-lg roboto text-gray-600">For valued {membership} membership in</p>
             <p class="text-xl md:text-2xl roboto font-medium text-orange-600">
-                Living Open Source Foundation            
+                Living Open Source Foundation
             </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-center">
             <div>
                 <p class="text-sm roboto text-gray-500">Date Issued:</p>
-                <p class="text-base md:text-lg roboto font-medium">[Issue Date]</p>
+                <p class="text-base md:text-lg roboto font-medium">{date}</p>
             </div>
             <div>
                 <p class="text-sm roboto text-gray-500">Membership ID:</p>
-                <p class="text-base md:text-lg roboto font-medium">[Membership ID]</p>
+                <p class="text-base md:text-lg roboto font-medium">{membershipID}</p>
             </div>
         </div>
 
@@ -49,7 +53,7 @@
             <div class="text-center">
                 <p class="text-sm roboto text-gray-500">Authorized Signature:</p>
                 <div class="border-b-2 border-gray-400 w-32 mx-auto mt-2"></div>
-                <p class="text-base roboto">[Signatory Name/Title]</p>
+                <p class="text-base roboto">{signature}</p>
             </div>
             <div class="text-center">
                  <img src="/LOSF Orange.png" alt="Organization Seal" class="rounded-full h-5">

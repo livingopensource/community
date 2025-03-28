@@ -22,6 +22,7 @@
   import { slide } from 'svelte/transition';
   import moment from 'moment';
   import type { ActionData, PageServerLoad } from './$types';
+	import MembershipCertificate from '$lib/components/membership-certificate.svelte';
   let { data, form }: { data: PageServerLoad & { subscriptions: any[], memberships: any[], userSubscriptions: any[], dpoHostedPage: string }, form: ActionData } = $props();
 
   const membership = data.memberships;
@@ -152,9 +153,10 @@
             <TableHeadCell>Validity</TableHeadCell>
           </TableHead>
           <TableBody tableBodyClass="divide-y">
-            {#each userSubscriptions as item, i}
+            {/* @ts-ignore */ null }
+            {#each userSubscriptions.subscriptions as item, i}
               <TableBodyRow on:click={() => toggleSubscriptionRow(i)}>
-                <TableBodyCell>{item.Membership.name}</TableBodyCell>
+                <TableBodyCell>{item.memberships.name}</TableBodyCell>
                 <TableBodyCell>
                   {#if item.paid}
                     Yes
@@ -169,13 +171,13 @@
                   <TableBodyCell colspan={4} class="p-0">
                     <div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.Membership.name}</h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.Membership.subTitle}</p>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.memberships.name}</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.memberships.subTitle}</p>
                         {#if item.status == "initialised"}
                           <Button size="sm" pill outline onclick={() => {
                             window.location.href = data.dpoHostedPage+"?ID="+item.externalTransactionId
                           }}>
-                            proceed to complete payment
+                            continue to complete payment
                           </Button>
                         {:else if item.status == 'failed'}
                           <Button size="sm" pill outline disabled>
@@ -187,24 +189,13 @@
                   </TableBodyCell>
                 </TableBodyRow>
               {/if}
-            {/each}
+              {#if item.paid}
+                {/* @ts-ignore */ null }
+                <MembershipCertificate  name={data.user.name} date={moment(item.createdAt).format("MMM Do, YYYY")} membership={item.memberships.name} membershipID={item.id} />
+              {/if}
+              {/each}
           </TableBody>
         </Table>
-      </div>
-      <div class="flex-auto w-14">
-        {#if !data.subscriptions || data.subscriptions.length == 0}
-        <h1 class="dark:text-white">
-          You don't have an active membership subscription
-        </h1>
-        <br />
-          <div class="flex justify-center">
-            <enhanced:img src="/src/lib/assets/images/404.svg" alt="error" />
-          </div>
-        {:else}
-          <div class="flex justify-center">
-           
-          </div>
-        {/if}
       </div>
     </div>
   </div>

@@ -72,7 +72,6 @@ export const actions = {
 
     const txnId = crypto.randomUUID()
 
-    //const subscription = await Subscription.createSubscription(user.id, membership.id, membership.amount, membership.currency, "DPO", txnId, "initialised", "membership subscription fees")
     const subscription = await createSubscription(user.id, membership.id, membership.amount, membership.currency, "DPO", txnId, "initialised", "membership subscription fees")
     if (subscription == null) {
       return {

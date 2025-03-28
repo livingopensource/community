@@ -22,7 +22,11 @@ export async function userSubscriptions(email: string) {
             email: email,
         },
         include: {
-            subscriptions: true
+            subscriptions: {
+                include: {
+                    memberships: true
+                }
+            }
         }
     })
 }
