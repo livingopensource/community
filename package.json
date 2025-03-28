@@ -1,7 +1,10 @@
 {
-	"name": "convo",
+	"name": "community",
 	"version": "0.0.1",
 	"type": "module",
+	"prisma": {
+		"seed": "ts-node prisma/seed"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -21,6 +24,7 @@
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/bcrypt": "^5.0.2",
 		"@types/eslint": "^9.6.0",
+		"@types/node": "^22.13.13",
 		"@types/nodemailer": "^6.4.16",
 		"@xterm/addon-fit": "^0.10.0",
 		"@xterm/addon-web-links": "^0.11.0",
@@ -42,7 +46,8 @@
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^3.4.9",
-		"typescript": "^5.6.3",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.2",
 		"typescript-eslint": "^8.0.0",
 		"vite": "^5.0.3",
 		"vite-plugin-static-copy": "^2.0.0",
@@ -54,7 +59,6 @@
 		"@prisma/client": "^6.5.0",
 		"@sequelize/core": "^7.0.0-alpha.43",
 		"@tinymce/tinymce-svelte": "^3.0.0",
-		"@types/node": "^22.8.7",
 		"bcrypt": "^5.1.1",
 		"dotenv": "^16.4.5",
 		"fast-xml-parser": "^4.5.0",
@@ -66,7 +70,6 @@
 		"sequelize": "^6.37.5",
 		"svelte-toasts": "^1.1.2",
 		"tinymce": "^7.4.1",
-		"ts-node": "^10.9.2",
 		"uuid": "^11.0.2"
 	}
 }

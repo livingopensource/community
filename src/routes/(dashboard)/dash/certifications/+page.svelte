@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
     import {
       Table,
       TableBody,
@@ -53,9 +53,10 @@
       PlusOutline
     } from 'flowbite-svelte-icons';
     import { slide } from 'svelte/transition';
+	import MembershipCertificate from '$lib/components/membership-certificate.svelte';
 
     onMount(() => {
-    const typeParam = $page.url.searchParams.get('type');
+    const typeParam = page.url.searchParams.get('type');
     if (typeParam) {
       const foundCertification = certifications.find(item => item.title === typeParam);
       if (foundCertification) {
@@ -113,6 +114,7 @@
             You don't have any certifications
           </h1>
           <br />
+          <MembershipCertificate />
             <div class="flex justify-center">
               <enhanced:img src="/src/lib/assets/images/404.svg" alt="error" />
             </div>
