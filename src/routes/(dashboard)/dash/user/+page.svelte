@@ -65,7 +65,7 @@
         </div>
         <div class="flex-auto w-14">
           <h1 class="dark:text-white">
-            Make sure your setaails are correct
+            Make sure your details are correct
           </h1>
           <br />
             <div class="flex justify-center">
