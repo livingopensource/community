@@ -28,11 +28,6 @@
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-5 w-5 mr-2">
                 <SignIn provider="google" />
             </div>
-             <div> Or</div>
-            <div>
-                <img src="https://www.svgrepo.com/show/512317/github-142.svg" alt="GitHub" class="h-5 w-5 mr-2">
-                <SignIn provider="github" />
-            </div>
         </div>
       </div>
     </Card>
