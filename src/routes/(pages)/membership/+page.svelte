@@ -81,7 +81,7 @@
                     </p>
                     <Badge rounded large color="dark" class="text-2xl font-bold">{certification.amount}</Badge>
                     <p class="mt-5 font-normal text-gray-700 dark:text-gray-400">
-                        {certification.description}
+                        {@html certification.description}
                     </p>
                     <br />
                     <Button outline pill size="sm" class="absolute bottom-1 right-5">

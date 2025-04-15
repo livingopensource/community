@@ -7,8 +7,8 @@
     EditOutline
   } from 'flowbite-svelte-icons';
   import { onMount } from 'svelte'; 
-  import type { PageServerData } from './$types'; 
-  let {data}: {data: PageServerData} = $props();
+
+  let {data}  = $props();
   import Editor from '@tinymce/tinymce-svelte';
   let conf = {
     skin: 'oxide-dark',
@@ -26,19 +26,19 @@
       'removeformat | emoticons | fullscreen'
   }
 
-  let content = $state("")
+  let content = $state(data.membership?.subTitle)
   let type = $state("title")
-  let title = $state("")
-  let description = $state("")
-  let amount = $state("")
-  let name = $state("")
+  let title = $state(data.membership?.subTitle)
+  let description = $state(data.membership?.description)
+  let amount = $state(data.membership?.amount.toString())
+  let name = $state(data.membership?.name)
 
   onMount(() => {
-    name = data.membership.name
-    title = data.membership.subTitle
-    description = data.membership.description
-    amount = data.membership.amount
-    content = data.membership.subTitle
+    name = data.membership?.name
+    title = data.membership?.subTitle
+    description = data.membership?.description
+    amount = data.membership?.amount.toString()
+    content = data.membership?.subTitle
   })
 
   $effect(() => {
@@ -68,7 +68,7 @@
   <div class="flex-grow">
     <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
       <h1 class="mx-10 p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
-        {data.membership.name} Membership Details
+        {data.membership?.name} Membership Details
       </h1>
       <div class="mx-10 flex flex-wrap justify-center gap-4 p-5 text-center">
         <div class="flex-auto sm:w-max md:w-max w-full">
