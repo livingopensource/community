@@ -7,7 +7,7 @@ async function main() {
     data: {
       name: "Community",
       subTitle: "This tier is perfect for those starting their journey in the open-source world or looking to stay informed about industry developments.",
-      description: "Access to open-source resources and repositories \nMonthly updates on industry news and trends \nParticipation in professional online forums \nDiscounts on training courses, webinars, and events \nOpportunity to join live sessions on requested topics",
+      description: "<p>Access to open source resources and repositories</p> <p>Discounted entry to conferences and networking events</p> <p>Opportunities to contribute to high profile open-source projects</p> <p>Reduced rates for Linux certification courses</p>",
       amount: 600,
       currency: "ZMW",
       period: 12,
@@ -18,7 +18,7 @@ async function main() {
     data: {
       name: "Proffesional",
       subTitle: "Ideal for professionals seeking to deepen their expertise and expand their network within the open-source community.",
-      description: "All Explorer tier benefits \nAccess to exclusive webinars and virtual workshops \nFree or discounted entry to conferences and networking events \nPriority access to new open-source project releases \nOpportunities to contribute to high-profile open-source projects \nReduced rates for Linux certification courses",
+      description: "<p>All Community benefits</p><p>One-on-one mentorship sessions with experienced IT professional</p> <p>Personalized career development plans and guidance</p> <p>Recognition as a Premium Member on the LOS website</p>",
       amount: 6000,
       currency: "ZMW",
       period: 12,
@@ -28,8 +28,8 @@ async function main() {
   const corporate = await prisma.membership.create({
     data: {
       name: "Corporate",
-      subTitle: "This tier is designed for individuals aiming for significant career advancement, offering tailored support and recognition.",
-      description: "All Professional benefits \nOne-on-one mentorship sessions with experienced IT professionals \nPersonalized career development plans and guidance \nRecognition as a Premium Member on the LOS website",
+      subTitle: "The corporate tier offers exclusive access and premium support,",
+      description: "<p>All professional benefits </p> <p>Exclusive live sessions with renowned instructor Sander Van Vugt</p> <p>Early access to high-level training and certification programs</p> <p>VIP invitations to global open-source conferences and events</p> <p>Personalized introductions to industry leaders and experts</p> <p>Priority support and direct access to the Foundation’s leadership team</p>",
       amount: 9000,
       currency: "ZMW",
       period: 12,
