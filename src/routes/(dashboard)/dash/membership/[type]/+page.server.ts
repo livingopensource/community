@@ -1,9 +1,9 @@
-import { Membership } from "$lib/server/databases/pg/memberships";
+import { membershipByID } from '$lib/server/databases/memberships.js';
 
 export async function load({ params }) {
     const membershipType  = params.type;
-    const membership = await Membership.getMembershipDetails(membershipType)
+    const membership = await membershipByID(membershipType)
   return {
-    membership: membership?.toJSON()
+    membership: membership
   };
 }

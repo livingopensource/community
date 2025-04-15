@@ -1,47 +1,57 @@
-import { Membership, Subscription } from '$lib/server/databases/pg/memberships';
 import { env } from '$env/dynamic/private'
 import crypto from 'crypto'
 import {formatDate} from '$lib/utils';
 import { XMLParser } from 'fast-xml-parser';
 import { redirect } from '@sveltejs/kit';
-import { Session } from '$lib/server/databases/pg/users.js';
+import { createSubscription, updateSubscription, userPaidSubscriptions, userSubscriptions } from '$lib/server/databases/subscriptions';
+import { membershipByID, memberships } from '$lib/server/databases/memberships';
+import { userData } from '$lib/server/databases/users';
 
-export async function load({ parent }) {
-    const data = await parent();
-    const subscriptions = await Subscription.getUserActiveSubscriptions(data.user.User.id)
-    const memberships = await Membership.getAllMemberships()
-    const userSubscriptions = await Subscription.getUserSubscriptions(data.user.User.id)
+export async function load(event) {
+  const session = await event.locals.auth();
+
+  if (!session?.user) {
+          redirect(303, `/signin`);
+  }
+
+  if (!session.user.email) throw redirect(303, "/signin");
+
+    const subscriptions = await userPaidSubscriptions(session.user.email)
+    const membershipsTiers = await memberships();
+    const usersSubscriptions = await userSubscriptions(session.user.email)
   return {
-    subscriptions: subscriptions.map(s => s.toJSON()),
-    memberships: memberships.map(m => m.toJSON()),
-    userSubscriptions: userSubscriptions.map(m => m.toJSON()),
+    subscriptions,
+    memberships: membershipsTiers,
+    userSubscriptions: usersSubscriptions,
     dpoHostedPage: env.DPO_HOSTED_PAGE
   };
 }
 
 export const actions = {
-  default: async({request, cookies}) => {
-    const losfCookie = cookies.get("losf");
-    if (losfCookie == null) {
-       return {
+  default: async({request, locals}) => {
+    const session = await locals.auth();
+
+    if (session == null || session.user == null || session.user.email == null) {
+      return {
         status: 400,
         body: {
-            message: 'Invalid session'
+            message: 'Invalid user'
         }
       }
     }
-    const user = await Session.getUser(losfCookie);
+
+    const user = await userData(session.user.email)
     if (user == null) {
       return {
         status: 400,
         body: {
-            message: 'Invalid session'
+            message: 'Invalid user'
         }
       }
     }
     let transactionPaymentRequestToken = "1234";
     const data = await request.formData()
-    const id = data.get("id")
+    const id = data.get("id")?.toString()
     if (id == null) {
       return {
         status: 400,
@@ -50,7 +60,7 @@ export const actions = {
         }
       }
     }
-    const membership = await Membership.getMembership(id.toString())
+    const membership = await membershipByID(id)
     if (membership == null) {
       return {
         status: 400,
@@ -62,7 +72,7 @@ export const actions = {
 
     const txnId = crypto.randomUUID()
 
-    const subscription = await Subscription.createSubscription(user.toJSON().User.id, membership.toJSON().id, membership.toJSON().amount, membership.toJSON().currency, "DPO", txnId, "initialised", "membership subscription fees")
+    const subscription = await createSubscription(user.id, membership.id, membership.amount, membership.currency, "DPO", txnId, "initialised", "membership subscription fees")
     if (subscription == null) {
       return {
         status: 400,
@@ -77,8 +87,8 @@ export const actions = {
       <CompanyToken>${env.DPO_TOKEN}</CompanyToken>
       <Request>createToken</Request>
       <Transaction>
-        <PaymentAmount>${membership.toJSON().amount}</PaymentAmount>
-        <PaymentCurrency>${membership.toJSON().currency}</PaymentCurrency>
+        <PaymentAmount>${membership.amount}</PaymentAmount>
+        <PaymentCurrency>${membership.currency}</PaymentCurrency>
         <CompanyRef>${txnId}</CompanyRef>
         <RedirectURL>${env.DPO_REDIRECT_URL}</RedirectURL>
         <BackURL>${env.DPO_BACK_URL}</BackURL>
@@ -167,14 +177,17 @@ export const actions = {
         }
       }
 
-      const subscriptionId: string = await subscription.toJSON().id
-      await subscription.update({
-        externalTransactionId: tokenPayload.API3G.TransToken
-      }, {
-        where: {
-          id: subscriptionId
+      const updatedSubscription = await updateSubscription(subscription.id, "pending", "membership subscription fees", tokenPayload.API3G.TransToken)
+
+      if (updatedSubscription == null) {
+        return {
+          status: 400,
+          body: {
+              message: 'Unable to complete transaction, please try again later'
+          }
         }
-      })
+      }
+
       transactionPaymentRequestToken = tokenPayload.API3G.TransToken
       } catch(err) {
         console.log(err)

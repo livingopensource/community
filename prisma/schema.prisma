@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Membership {
+  id            String          @id @default(cuid())
+  name          String          @db.VarChar(255) @unique
+  subTitle      String?         @db.VarChar(255) @map("sub_title")
+  description   String?
+  amount        Float
+  currency      String          @db.VarChar(255)
+  period        Int             @default(12)
+  createdAt     DateTime        @db.Timestamptz(6) @default(now()) @map("updated_at")
+  updatedAt     DateTime        @db.Timestamptz(6) @updatedAt @map("created_at")
+  subscriptions Subscription[]
+
+  @@map("memberships")
+}
+
+model Permission {
+  id                String              @id @default(cuid())
+  name              String              @db.VarChar(255) @unique
+  description       String?             @db.VarChar(255)
+  createdAt         DateTime            @db.Timestamptz(6) @default(now()) @map("created_at")
+  updatedAt         DateTime            @db.Timestamptz(6) @updatedAt @map("updated_at")
+  RoleId            String?             @map("role_id")
+  roles             Role?               @relation(fields: [RoleId], references: [id])
+  permissions_roles PermissionRole[]
+
+  @@map("permissions")
+}
+
+model PermissionRole {
+  createdAt    DateTime     @db.Timestamptz(6) @default(now()) @map("created_at")
+  updatedAt    DateTime     @db.Timestamptz(6) @updatedAt @map("updated_at")
+  PermissionId String       @map("permission_id")
+  RoleId       String       @map("role_id")
+  permissions  Permission   @relation(fields: [PermissionId], references: [id], onDelete: Cascade)
+  roles        Role         @relation(fields: [RoleId], references: [id], onDelete: Cascade)
+
+  @@id([PermissionId, RoleId])
+
+  @@map("permissions_roles")
+}
+
+model Role {
+  id                String              @id @default(cuid())
+  name              String              @db.VarChar(255) @unique
+  description       String?             @db.VarChar(255)
+  createdAt         DateTime            @db.Timestamptz(6) @default(now())@map("created_at")
+  updatedAt         DateTime            @db.Timestamptz(6) @updatedAt @map("updated_at")
+  permissions       Permission[]
+  permissions_roles PermissionRole[]
+
+  @@map("roles")
+}
+
+ 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @db.Timestamptz(6) @default(now()) @map("created_at")
+  updatedAt DateTime @db.Timestamptz(6) @updatedAt @map("updated_at")
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+ 
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("sessions")
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+ 
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique @map("credential_id")
+  userId               String  @map("user_id")
+  providerAccountId    String  @map("provider_account_id")
+  credentialPublicKey  String  @map("credential_public_key")
+  counter              Int
+  credentialDeviceType String  @map("credential_device_type")
+  credentialBackedUp   Boolean @map("credential_backup_up")
+  transports           String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([userId, credentialID])
+  @@map("authenticators")
+}
+
+model Subscription {
+  id                    String       @id @default(cuid())
+  amount                Float
+  currency              String       @db.VarChar(255)
+  paid                  Boolean?     @default(false)
+  paymentMethod         String?      @db.VarChar(255) @map("payment_method")
+  transactionId         String?      @db.VarChar(255) @map("transaction_id")
+  status                String?      @db.VarChar(255)
+  reason                String?      @db.VarChar(255)
+  createdAt             DateTime     @db.Timestamptz(6) @default(now()) @map("created_at")
+  updatedAt             DateTime     @db.Timestamptz(6) @updatedAt @map("updated_at")
+  MembershipId          String?      @map("membership_id")
+  UserId                String?      @map("user_id")
+  externalTransactionId String?      @db.VarChar(255) @map("external_transaction_id")
+  memberships           Membership?  @relation(fields: [MembershipId], references: [id])
+  users                 User?        @relation(fields: [UserId], references: [id])
+
+  @@map("subscriptions")
+}
+
+model User {
+  id                String          @id @default(cuid())
+  name              String?          @db.VarChar(255)
+  email             String          @unique @db.VarChar(255)
+  password          String?
+  image             String?
+  active            Boolean?        @default(true)
+  createdAt         DateTime        @db.Timestamptz(6) @default(now()) @map("created_at")
+  updatedAt         DateTime        @db.Timestamptz(6) @updatedAt @map("updated_at")
+  emailVerified     DateTime?       @map("email_verified")
+  sessions          Session[]
+  subscriptions     Subscription[]
+
+  Authenticator Authenticator[]
+
+  Account Account[]
+  @@map("users")
+}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
     import {
       Table,
       TableBody,
@@ -55,7 +55,7 @@
     import { slide } from 'svelte/transition';
 
     onMount(() => {
-    const typeParam = $page.url.searchParams.get('type');
+    const typeParam = page.url.searchParams.get('type');
     if (typeParam) {
       const foundCertification = certifications.find(item => item.title === typeParam);
       if (foundCertification) {

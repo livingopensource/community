@@ -1,19 +1,20 @@
-import { Session } from '$lib/server/databases/pg/users';
 import { redirect } from '@sveltejs/kit';
-//import { ProcessPayments } from '../../lib/server/workers/jobs';
 
 export async function load(event) {
-    let user;
-    const losfCookie = event.cookies.get("losf");
-    if (losfCookie != null) {
-       user = await Session.getUser(losfCookie);
+    const session = await event.locals.auth();
+
+    if (!session?.user) {
+        const redirectTo = `/signin?redirect=${encodeURIComponent(event.url.pathname + event.url.search)}`;
+        throw redirect(302, redirectTo);
     }
-    if (user == null) {
-        throw redirect(302, "/login");
+
+    // Make sure the logged in user has a name
+    if (event.url.pathname !== "/dash/user") {
+        if (!session?.user.name) redirect(303, `/dash/user?redirect=${encodeURIComponent(event.url.pathname + event.url.search)}`);
     }
-    // ProcessPayments();
+
     return {
-        user: user.toJSON(),
+        user: session.user,
         title: 'Dashboard',
     };
 }

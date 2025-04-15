@@ -1,15 +1,13 @@
 import { XMLParser } from "fast-xml-parser";
-import { Subscription } from "../databases/pg/memberships";
 import { env } from "$env/dynamic/private";
+import { pendingSubscriptions, updateSubscriptionStatus } from "../databases/subscriptions";
 
-async function processPayments() {
-    const subscriptions = await Subscription.getAllPendingSubscriptions()
+export async function processPayments() {
+    const subscriptions = await pendingSubscriptions()
     for (const subscription of subscriptions) {
-        const txnId = subscription.toJSON().externalTransactionId
+        const txnId = subscription.externalTransactionId
         if (txnId == null) {
-            await subscription.update({
-                status: 'failed'
-            })
+            await updateSubscriptionStatus(subscription.id, 'failed')
         } else {
             const verifyTransactionToken = `
             <?xml version="1.0" encoding="utf-8"?>
@@ -39,16 +37,12 @@ async function processPayments() {
             const verifyTokenPayload = parser.parse(verifyToken)
             console.log(verifyTokenPayload)
             if (verifyTokenPayload.API3G.Result == "000") {
-                await subscription.update({
-                    status: 'succeeded'
-                })
+                await updateSubscriptionStatus(subscription.id, 'succeeded')
             } else if(verifyTokenPayload.API3G.Result == "801" || verifyTokenPayload.API3G.Result == "802" || verifyTokenPayload.API3G.Result == "803"
                 || verifyTokenPayload.API3G.Result == "804" || verifyTokenPayload.API3G.Result == "901" || verifyTokenPayload.API3G.Result == "902" || verifyTokenPayload.API3G.Result == "903"
                 || verifyTokenPayload.API3G.Result == "804" || verifyTokenPayload.API3G.Result == "950"
             ) {
-                await subscription.update({
-                    status: 'failed'
-                })
+                await updateSubscriptionStatus(subscription.id, 'failed')
             }else {
                 continue
             }
