@@ -125,9 +125,9 @@
             {#each data.applicants as item, i}
             <TableBodyRow on:click={() => toggleRow(i)}>
               <TableBodyCell>{item.user.name} <br /> ({item.user.email})</TableBodyCell>
-              <TableBodyCell> {item.jobTitle} </TableBodyCell>
-              <TableBodyCell> {item.organisation} </TableBodyCell>
-              <TableBodyCell> {item.workExperience} Years </TableBodyCell>
+              <TableBodyCell>{item.jobTitle}</TableBodyCell>
+              <TableBodyCell>{item.organisation}</TableBodyCell>
+              <TableBodyCell>{item.workExperience} Years</TableBodyCell>
               <TableBodyCell>{item.country}</TableBodyCell>
             </TableBodyRow>
             {/each}
