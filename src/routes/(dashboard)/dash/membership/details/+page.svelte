@@ -51,10 +51,18 @@
           <h1 class="dark:text-white">
             Membership Form
             <br />
-            {#if data.user.applicant.length === 1 && data.user.applicant[0].membershipId == null}
+            {#if data.user.applicant?.length === 1 && data.user.applicant[0].membershipId == null}
               (Pending Subscription assignment, we'll notify you via email when a tier is assigned to you)
-            {:else if data.user.applicant.length === 1 && data.user.applicant[0].membership != null}
-              (Assigned Membership {data.user.applicant[0].membership.name})
+            {:else if data.user.applicant?.length === 1 && data.user.applicant[0]?.membership != null}
+              {#if data.user.subscriptions.length == 0}
+               <a href="/dash/membership?type={data.user.applicant[0].membership?.name}">(Click here to make payment for your {data.user.applicant[0].membership?.name} membership)</a>
+              {:else}
+                {#each data.user.subscriptions as subscription}
+                  {#if subscription.status = "paid"}
+                    You an active {subscription.membership?.name} membership
+                  {/if}
+                {/each}
+              {/if}
             {/if}
           </h1>
           <br />

@@ -25,18 +25,37 @@ export async function load(event) {
     const membershipsTiers = await memberships();
     const usersSubscriptions = await userSubscriptions(session.user.email)
 
-  let applicants: ({ user: { email: string; id: string; name: string | null; password: string | null; image: string | null; active: boolean | null; createdAt: Date; updatedAt: Date; emailVerified: Date | null; } | null; } & { id: string; updatedAt: Date; userId: string; workExperience: number; jobTitle: string; organisation: string; specialisation: string; country: string | null; other: string | null; appliedAt: Date; approverId: string | null; approvedAt: Date | null; membershipId: string | null; })[] = []
+  let applicants: ({ user: { email: string; id: string; name: string | null; password: string | null; image: string | null; active: boolean | null; createdAt: Date; updatedAt: Date; emailVerified: Date | null; } | null; membership: { id: string; name: string; createdAt: Date; updatedAt: Date; subTitle: string | null; description: string | null; amount: number; currency: string; period: number; } | null; } & { id: string; updatedAt: Date; userId: string; workExperience: number; jobTitle: string; organisation: string; specialisation: string; country: string | null; other: string | null; appliedAt: Date; approverId: string | null; approvedAt: Date | null; membershipId: string | null; })[] = []
   const parent = await event.parent()
   if (parent.isAdmin) {
     applicants = await prisma.membershipApplication.findMany({
       include: {
-        user: true
-      }
+        user: true,
+        membership: true
+      },
+      orderBy: [
+        {approvedAt: {sort: "desc", nulls: "first"}},
+        {appliedAt: "desc"}
+      ]
     })
   }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: session.user.email
+    },
+    include: {
+      applicant: {
+        include: {
+          membership: true
+        }
+      }
+    }
+  })
   
   return {
     subscriptions,
+    user: user,
     applicants: applicants,
     memberships: membershipsTiers,
     userSubscriptions: usersSubscriptions,
@@ -260,6 +279,7 @@ export const actions = {
           approverId: userInfo.id
         }
       })
+      // TODO: Send an email to the user letting them know that a tier has been assigned
       return message(form, "Successfully assigned membership")
     } catch(error) {
       console.log(error)

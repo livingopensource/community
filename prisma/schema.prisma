@@ -138,7 +138,7 @@ model Subscription {
   MembershipId          String?     @map("membership_id")
   UserId                String?     @map("user_id")
   externalTransactionId String?     @map("external_transaction_id") @db.VarChar(255)
-  memberships           Membership? @relation(fields: [MembershipId], references: [id])
+  membership            Membership? @relation(fields: [MembershipId], references: [id])
   users                 User?       @relation(fields: [UserId], references: [id])
 
   @@index([UserId, MembershipId, paymentMethod, status, transactionId, paid])

@@ -24,7 +24,7 @@ export async function userSubscriptions(email: string) {
         include: {
             subscriptions: {
                 include: {
-                    memberships: true
+                    membership: true
                 }
             }
         }

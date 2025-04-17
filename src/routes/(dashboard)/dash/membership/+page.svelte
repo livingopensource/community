@@ -75,21 +75,6 @@
     openSubscriptionRow = openSubscriptionRow === i ? null : i;
   }
 
-  const errorToast = (p0: HTMLDivElement, message: string) => {
-    toasts.add({
-      title: 'Unable to process payment',
-      description: message,
-      duration: 16000, // 0 or negative to avoid auto-remove
-      placement: 'center-center',
-      type: 'error',
-			showProgress: true,
-      onClick: () => {},
-      onRemove: () => {},
-      // component: BootstrapToast, // allows to override toast component/template per toast
-    });
-
-  }
-
   onMount(() => {
     const typeParam = $page.url.searchParams.get('type');
     if (typeParam) {
@@ -144,7 +129,7 @@
           <TableBody tableBodyClass="divide-y">
             {#each data.applicants as item, i}
             <TableBodyRow on:click={() => toggleRow(i)} class="cursor-pointer">
-              <TableBodyCell>{item.user?.name} <br /> ({item.user?.email})</TableBodyCell>
+              <TableBodyCell>{item.user?.name} <br /> ({item.user?.email}) <br /> {item.membership?.name}</TableBodyCell>
               <TableBodyCell>{item.jobTitle}</TableBodyCell>
               <TableBodyCell>{item.organisation}</TableBodyCell>
               <TableBodyCell>{item.workExperience} Years</TableBodyCell>
@@ -153,8 +138,8 @@
             <Modal title="{item.user?.name}'s Membership" open={openRow === i}>
               <form method="post" action="?/assign">
                 <div class="flex flex-col gap-4">
-                  <Label for="name">Membership Tier</Label>
-                  <Select required placeholder="Select Membership type" name="membership" bind:value={$form.membership}>
+                  <Label for="name">{item.membership?.name ?? ""} Membership Tier</Label>
+                  <Select required placeholder={item.membership?.name ? "Change Membership type"  : "Assign Membership type"} name="membership" bind:value={$form.membership}>
                     {#each membership as item}
                       <option value="{item.id}">{item.name}</option>
                     {/each}
@@ -187,9 +172,15 @@
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.name}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.subTitle}</p>
-                        <Button size="sm" pill onclick={() => paymentConfirmationModal = true} disabled>
-                          Subscribe <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-                        </Button>
+                        {#if item.name == data.user?.applicant[0].membership?.name}
+                          <Button size="sm" pill onclick={() => paymentConfirmationModal = true}>
+                            Pay <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
+                          </Button>
+                        {:else}
+                          <Button size="sm" pill disabled>
+                            Pay <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
+                          </Button>
+                        {/if}
                         <Modal bind:open={paymentConfirmationModal}>
                           <div class="text-center">
                             <ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
@@ -249,8 +240,8 @@
                   <TableBodyCell colspan={4} class="p-0">
                     <div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.memberships?.name}</h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.memberships?.subTitle}</p>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.membership?.name}</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.membership?.subTitle}</p>
                         {#if item.status == "initialised"}
                           <Button size="sm" pill outline onclick={() => {
                             window.location.href = data.dpoHostedPage+"?ID="+item.externalTransactionId
@@ -268,7 +259,7 @@
                 </TableBodyRow>
               {/if}
               {#if item.paid}
-                <MembershipCertificate  name={data.user?.name ?? ""} date={moment(item.createdAt).format("MMM Do, YYYY")} membership={item.memberships?.name} membershipID={item.id} />
+                <MembershipCertificate  name={data.user?.name ?? ""} date={moment(item.createdAt).format("MMM Do, YYYY")} membership={item.membership?.name} membershipID={item.id} />
               {/if}
               {/each}
           </TableBody>

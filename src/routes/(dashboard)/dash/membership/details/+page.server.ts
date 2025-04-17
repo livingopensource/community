@@ -19,7 +19,16 @@ export const load: PageServerLoad = async ({locals}) => {
             email: session.user.email
         },
         include: {
-            applicant: true
+            applicant: {
+                include: {
+                    membership: true
+                }
+            },
+            subscriptions: {
+                include: {
+                    membership: true
+                }
+            }
         }
     })
 
@@ -103,7 +112,7 @@ export const actions = {
                     country: form.data.country
                 }
             })
-
+            // TODO: Notify the los Admins of the new user applications
             return message(form, "Successfully submitted application")
         }
         catch(err) {
