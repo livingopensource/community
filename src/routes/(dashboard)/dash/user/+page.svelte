@@ -21,9 +21,6 @@
 
 <div class="flex-grow">
     <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
-      <h1 class="p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
-        {data?.user.name ?? ""}
-      </h1>
       <div class="flex flex-wrap gap-4 p-5 text-center">
         <div class="flex-auto sm:w-max md:w-max">
           <h1 class="dark:text-white">Profile Details</h1>
@@ -51,7 +48,7 @@
                     </div>
                     <div class="mb-6">
                         <Label for="email" class="block mb-2 text-left">Email</Label>
-                        <Input name="email" type="email" placeholder="email@eample.com" required value={data.user.email}>
+                        <Input name="email" type="email" disabled placeholder="email@eample.com" required value={data.user.email}>
                           <MailBoxOutline slot="left" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                         </Input>
                     </div>

@@ -23,11 +23,9 @@
             </span>
           </SignIn>
         </div>
-        <div class="grid grid-cols-3 justify-content-center">
-            <div>
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-5 w-5 mr-2">
-                <SignIn provider="google" />
-            </div>
+        <div class="grid justify-content-center">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-5 w-5 mr-2">
+              <SignIn provider="google" />
         </div>
       </div>
     </Card>

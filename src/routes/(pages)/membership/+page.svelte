@@ -79,7 +79,7 @@
                     <p class="mb-5 p-5 font-xs text-gray-700 dark:text-gray-400">
                         {certification.subTitle}
                     </p>
-                    <Badge rounded large color="dark" class="text-2xl font-bold">{certification.amount}</Badge>
+                    <Badge rounded large color="dark" class="text-2xl font-bold">{certification.currency} {certification.amount}</Badge>
                     <p class="mt-5 font-normal text-gray-700 dark:text-gray-400">
                         {@html certification.description}
                     </p>

@@ -6,6 +6,7 @@ import { redirect } from '@sveltejs/kit';
 import { createSubscription, updateSubscription, userPaidSubscriptions, userSubscriptions } from '$lib/server/databases/subscriptions';
 import { membershipByID, memberships } from '$lib/server/databases/memberships';
 import { userData } from '$lib/server/databases/users';
+import prisma from "$lib/server/databases/prisma";
 
 export async function load(event) {
   const session = await event.locals.auth();
@@ -19,8 +20,19 @@ export async function load(event) {
     const subscriptions = await userPaidSubscriptions(session.user.email)
     const membershipsTiers = await memberships();
     const usersSubscriptions = await userSubscriptions(session.user.email)
+
+  let applicants = []
+  const parent = await event.parent()
+  if (parent.isAdmin) {
+    applicants = await prisma.membershipApplication.findMany({
+      include: {
+        user: true
+      }
+    })
+  }
   return {
     subscriptions,
+    applicants: applicants,
     memberships: membershipsTiers,
     userSubscriptions: usersSubscriptions,
     dpoHostedPage: env.DPO_HOSTED_PAGE

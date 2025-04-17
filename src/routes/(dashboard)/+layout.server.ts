@@ -1,9 +1,10 @@
+import { isAdmin } from '$lib/server/config/utils.js';
 import { redirect } from '@sveltejs/kit';
 
 export async function load(event) {
     const session = await event.locals.auth();
 
-    if (!session?.user) {
+    if (!session?.user || !session?.user.email) {
         const redirectTo = `/signin?redirect=${encodeURIComponent(event.url.pathname + event.url.search)}`;
         throw redirect(302, redirectTo);
     }
@@ -15,6 +16,7 @@ export async function load(event) {
 
     return {
         user: session.user,
+        isAdmin: isAdmin(session.user.email),
         title: 'Dashboard',
     };
 }

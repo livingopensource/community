@@ -21,14 +21,15 @@
   import { toasts, ToastContainer, FlatToast }  from "svelte-toasts";
   import { slide } from 'svelte/transition';
   import moment from 'moment';
-  import type { ActionData, PageServerLoad } from './$types';
 	import MembershipCertificate from '$lib/components/membership-certificate.svelte';
-  let { data, form }: { data: PageServerLoad & { subscriptions: any[], memberships: any[], userSubscriptions: any[], dpoHostedPage: string }, form: ActionData } = $props();
+
+  let { data, form } = $props();
 
   const membership = data.memberships;
   const userSubscriptions = data.userSubscriptions;
   let openRow: number | null = $state(null);
   let openSubscriptionRow: number | null = $state(null);
+
   let details: {
     name: string;
     amount: string;
@@ -90,13 +91,49 @@
           <input type="hidden" use:errorToast={form.body.message} />
       {/if}
     {/if}
-    <h1 class="mx-10 p-5 mb-3 text-2xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-xl dark:text-white">
-      Membership Details
-    </h1>
+    <div class="flex flex-cols-2 justify-end ml-10 mr-10">
+      <!-- Membership Details -->
+       <div></div>
+       <div>
+        {#if !data.isAdmin}
+        <Button size="sm" pill href="/dash/membership/details">
+          Membership Details
+        </Button>
+        {/if}
+       </div>
+    </div>
     <div class="flex flex-wrap justify-center gap-4 p-5 text-center">
       <div class="flex-auto sm:w-max md:w-max">
-        <h1 class="dark:text-white">Membership Options</h1>
+        <h1 class="dark:text-white">
+          {#if data.isAdmin}
+            Applicants
+          {:else}
+            Membership Options
+          {/if}
+        </h1>
         <br />
+        {#if data.isAdmin}
+        <Table>
+          <TableHead>
+            <TableHeadCell>Name</TableHeadCell>
+            <TableHeadCell>Job Title</TableHeadCell>
+            <TableHeadCell>Organisation</TableHeadCell>
+            <TableHeadCell>Experience</TableHeadCell>
+            <TableHeadCell>Country</TableHeadCell>
+          </TableHead>
+          <TableBody tableBodyClass="divide-y">
+            {#each data.applicants as item, i}
+            <TableBodyRow on:click={() => toggleRow(i)}>
+              <TableBodyCell>{item.user.name} <br /> ({item.user.email})</TableBodyCell>
+              <TableBodyCell> {item.jobTitle} </TableBodyCell>
+              <TableBodyCell> {item.organisation} </TableBodyCell>
+              <TableBodyCell> {item.workExperience} Years </TableBodyCell>
+              <TableBodyCell>{item.country}</TableBodyCell>
+            </TableBodyRow>
+            {/each}
+          </TableBody>
+        </Table>
+        {:else}
         <Table>
           <TableHead>
             <TableHeadCell>Type</TableHeadCell>
@@ -142,9 +179,16 @@
         <Modal title={details?.name} bind:open={doubleClickModal} autoclose outsideclose>
           <ImagePlaceholder />
         </Modal>
+        {/if}
       </div>
       <div class="flex-auto sm:w-max md:w-max">
-        <h1 class="dark:text-white">Your subscription history</h1>
+        <h1 class="dark:text-white">
+          {#if data.isAdmin}
+            Active Subscription (Members)
+          {:else}
+            Subscription History
+          {/if}
+        </h1>
         <br />
         <Table>
           <TableHead>
@@ -156,6 +200,7 @@
             {/* @ts-ignore */ null }
             {#each userSubscriptions.subscriptions as item, i}
               <TableBodyRow on:click={() => toggleSubscriptionRow(i)}>
+                {/* @ts-ignore */ null }
                 <TableBodyCell>{item.memberships.name}</TableBodyCell>
                 <TableBodyCell>
                   {#if item.paid}
