@@ -7,6 +7,10 @@ import { createSubscription, updateSubscription, userPaidSubscriptions, userSubs
 import { membershipByID, memberships } from '$lib/server/databases/memberships';
 import { userData } from '$lib/server/databases/users';
 import prisma from "$lib/server/databases/prisma";
+import { formSchema } from './schema';
+import { message, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { isAdmin } from '$lib/server/config/utils';
 
 export async function load(event) {
   const session = await event.locals.auth();
@@ -21,7 +25,7 @@ export async function load(event) {
     const membershipsTiers = await memberships();
     const usersSubscriptions = await userSubscriptions(session.user.email)
 
-  let applicants = []
+  let applicants: ({ user: { email: string; id: string; name: string | null; password: string | null; image: string | null; active: boolean | null; createdAt: Date; updatedAt: Date; emailVerified: Date | null; } | null; } & { id: string; updatedAt: Date; userId: string; workExperience: number; jobTitle: string; organisation: string; specialisation: string; country: string | null; other: string | null; appliedAt: Date; approverId: string | null; approvedAt: Date | null; membershipId: string | null; })[] = []
   const parent = await event.parent()
   if (parent.isAdmin) {
     applicants = await prisma.membershipApplication.findMany({
@@ -30,17 +34,19 @@ export async function load(event) {
       }
     })
   }
+  
   return {
     subscriptions,
     applicants: applicants,
     memberships: membershipsTiers,
     userSubscriptions: usersSubscriptions,
-    dpoHostedPage: env.DPO_HOSTED_PAGE
+    dpoHostedPage: env.DPO_HOSTED_PAGE,
+    form: await superValidate({}, zod(formSchema))
   };
 }
 
 export const actions = {
-  default: async({request, locals}) => {
+  payment: async({request, locals}) => {
     const session = await locals.auth();
 
     if (session == null || session.user == null || session.user.email == null) {
@@ -211,4 +217,55 @@ export const actions = {
         }
       }
       redirect(302, `${env.DPO_HOSTED_PAGE}?ID=${transactionPaymentRequestToken}`)
-  }}
+  },
+  assign: async({request, locals}) => {
+    const session = await locals.auth();
+
+    if (session == null || session.user == null || session.user.email == null) {
+      return {
+        status: 400,
+        body: {
+            message: 'Invalid user'
+        }
+      }
+    }
+
+    const form = await superValidate(request, zod(formSchema));
+    console.log(form)
+    if (!form.valid) {
+      return message(form, "Unable to save data, either no user or membership type selected", {
+          status: 400
+      })
+    }
+
+    try {
+      const userInfo = await prisma.user.findUnique({
+        where: {
+          email: session.user.email
+        }
+      })
+      
+      if (userInfo == null || !isAdmin(userInfo.email)) {
+        return message(form, "Unable to save data, you do not have permission to assign membership tiers", {
+            status: 400
+        })
+      }
+      await prisma.membershipApplication.update({
+        where: {
+          userId: form.data.user
+        },
+        data: {
+          membershipId: form.data.membership,
+          approvedAt: new Date(),
+          approverId: userInfo.id
+        }
+      })
+      return message(form, "Successfully assigned membership")
+    } catch(error) {
+      console.log(error)
+      return message(form, "Unable to save data, please try again later.", {
+          status: 400
+      })
+    }
+  }
+}

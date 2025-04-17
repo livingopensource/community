@@ -11,7 +11,9 @@
     ImagePlaceholder,
     Modal,
     Card,
-    Button
+    Button,
+    Select,
+    Label
   } from 'flowbite-svelte';
   import {
     ArrowRightOutline,
@@ -22,8 +24,29 @@
   import { slide } from 'svelte/transition';
   import moment from 'moment';
 	import MembershipCertificate from '$lib/components/membership-certificate.svelte';
+	import { superForm } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { formSchema } from './schema.js';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
-  let { data, form } = $props();
+  let { data } = $props();
+
+  const formData = superForm(data.form, {
+    validators: zodClient(formSchema),
+    onUpdated: ({ form: f }) => {
+      if (f.valid) {
+        toast.success(f.message);
+        /* setTimeout(() => {
+          goto("/dash/membership")
+        }, 3000); */
+      } else {
+        toast.error(f.message);
+      }
+    }
+  });
+
+  const { form, enhance, errors} = formData;
 
   const membership = data.memberships;
   const userSubscriptions = data.userSubscriptions;
@@ -32,9 +55,14 @@
 
   let details: {
     name: string;
-    amount: string;
-    subTitle: string;
-    description: string;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    amount: number;
+    subTitle: string | null;
+    description: string | null;
+    currency: string;
+    period: number;
   } = $state(membership[0]);
   let doubleClickModal = $state(false);
   let paymentConfirmationModal: boolean = $state(false);
@@ -83,14 +111,6 @@
 
 <div class="flex-grow">
   <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
-    {#if form != null}
-      {#if form.status != 200}
-          <div class="flex flex-col justify-center px-6 mx-auto xl:px-0">
-            <p class="dark:text-amber-500">{form?.body.message}</p>
-           </div>
-          <input type="hidden" use:errorToast={form.body.message} />
-      {/if}
-    {/if}
     <div class="flex flex-cols-2 justify-end ml-10 mr-10">
       <!-- Membership Details -->
        <div></div>
@@ -123,13 +143,26 @@
           </TableHead>
           <TableBody tableBodyClass="divide-y">
             {#each data.applicants as item, i}
-            <TableBodyRow on:click={() => toggleRow(i)}>
-              <TableBodyCell>{item.user.name} <br /> ({item.user.email})</TableBodyCell>
+            <TableBodyRow on:click={() => toggleRow(i)} class="cursor-pointer">
+              <TableBodyCell>{item.user?.name} <br /> ({item.user?.email})</TableBodyCell>
               <TableBodyCell>{item.jobTitle}</TableBodyCell>
               <TableBodyCell>{item.organisation}</TableBodyCell>
               <TableBodyCell>{item.workExperience} Years</TableBodyCell>
               <TableBodyCell>{item.country}</TableBodyCell>
             </TableBodyRow>
+            <Modal title="{item.user?.name}'s Membership" open={openRow === i}>
+              <form method="post" action="?/assign">
+                <div class="flex flex-col gap-4">
+                  <Label for="name">Membership Tier</Label>
+                  <Select required placeholder="Select Membership type" name="membership" bind:value={$form.membership}>
+                    {#each membership as item}
+                      <option value="{item.id}">{item.name}</option>
+                    {/each}
+                  </Select>
+                  <input type="hidden" name="user" value="{item.user?.id}" />
+                  <Button type="submit" pill>Submit</Button>
+              </form>
+            </Modal>
             {/each}
           </TableBody>
         </Table>
@@ -161,7 +194,7 @@
                           <div class="text-center">
                             <ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 text-wrap">You are about to make a payment of {item.currency} {item.amount} for your {item.name} membership subscription</h3>
-                            <form method="POST">
+                            <form method="POST" action="?/payment">
                               <input type="hidden" value={item.name} name="type" />
                               <input type="hidden" value={item.id} name="id" />
                               <Button pill type="submit" class="me-2">Proceed</Button>
@@ -216,8 +249,8 @@
                   <TableBodyCell colspan={4} class="p-0">
                     <div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.memberships.name}</h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.memberships.subTitle}</p>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.memberships?.name}</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.memberships?.subTitle}</p>
                         {#if item.status == "initialised"}
                           <Button size="sm" pill outline onclick={() => {
                             window.location.href = data.dpoHostedPage+"?ID="+item.externalTransactionId
@@ -235,8 +268,7 @@
                 </TableBodyRow>
               {/if}
               {#if item.paid}
-                {/* @ts-ignore */ null }
-                <MembershipCertificate  name={data.user.name} date={moment(item.createdAt).format("MMM Do, YYYY")} membership={item.memberships.name} membershipID={item.id} />
+                <MembershipCertificate  name={data.user?.name ?? ""} date={moment(item.createdAt).format("MMM Do, YYYY")} membership={item.memberships?.name} membershipID={item.id} />
               {/if}
               {/each}
           </TableBody>
