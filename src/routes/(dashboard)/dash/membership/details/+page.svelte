@@ -20,6 +20,7 @@
     } from 'flowbite-svelte-icons';
 	import { goto } from "$app/navigation";
 	import { toast } from "svelte-sonner";
+	import { formatDateToYYYYMMDD, isSubscriptionValid } from "$lib/utils";
     
   let {data} = $props()
 
@@ -58,8 +59,8 @@
                <a href="/dash/membership?type={data.user.applicant[0].membership?.name}">(Click here to make payment for your {data.user.applicant[0].membership?.name} membership)</a>
               {:else}
                 {#each data.user.subscriptions as subscription}
-                  {#if subscription.status = "paid"}
-                    You an active {subscription.membership?.name} membership
+                  {#if subscription.status == "succeeded" && isSubscriptionValid(formatDateToYYYYMMDD(subscription.createdAt))}
+                    You have an active {subscription.membership?.name} membership
                   {/if}
                 {/each}
               {/if}

@@ -11,6 +11,7 @@ import { formSchema } from './schema';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { isAdmin } from '$lib/server/config/utils';
+import { formatDateToYYYYMMDD, isSubscriptionValid } from "$lib/utils";
 
 export async function load(event) {
   const session = await event.locals.auth();
@@ -47,15 +48,30 @@ export async function load(event) {
     include: {
       applicant: {
         include: {
-          membership: true
+          membership: {
+            include: {
+              subscriptions: true
+            }
+          }
         }
       }
     }
   })
+
+  let disablePayment = false
+
+  user.applicant[0]?.membership?.subscriptions.forEach(element => {
+    if (element.paid && isSubscriptionValid(formatDateToYYYYMMDD(element.createdAt))) {
+      disablePayment = true
+      return
+    }
+    disablePayment = false
+  });
   
   return {
     subscriptions,
     user: user,
+    disablePayment: disablePayment, 
     applicants: applicants,
     memberships: membershipsTiers,
     userSubscriptions: usersSubscriptions,

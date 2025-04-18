@@ -10,6 +10,22 @@ export function formatDate(date: Date) {
   return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
 
+export function formatDateToYYYYMMDD(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is 0-based
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export function isSubscriptionValid(issuanceDate: string) {
+  const issuedDate = new Date(issuanceDate);
+  const expirationDate = new Date(issuedDate);
+  expirationDate.setFullYear(issuedDate.getFullYear() + 1);
+
+  const now = new Date();
+  return now <= expirationDate;
+}
+
 export async function generateCertificate() {
   // Create a new PDF Document
   const pdfDoc = await PDFDocument.create();

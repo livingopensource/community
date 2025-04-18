@@ -173,7 +173,7 @@
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.name}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.subTitle}</p>
                         {#if item.name == data.user?.applicant[0].membership?.name}
-                          <Button size="sm" pill onclick={() => paymentConfirmationModal = true}>
+                          <Button size="sm" pill onclick={() => paymentConfirmationModal = true} disabled = {data.disablePayment}>
                             Pay <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
                           </Button>
                         {:else}
@@ -221,11 +221,9 @@
             <TableHeadCell>Validity</TableHeadCell>
           </TableHead>
           <TableBody tableBodyClass="divide-y">
-            {/* @ts-ignore */ null }
             {#each userSubscriptions.subscriptions as item, i}
               <TableBodyRow on:click={() => toggleSubscriptionRow(i)}>
-                {/* @ts-ignore */ null }
-                <TableBodyCell>{item.memberships.name}</TableBodyCell>
+                <TableBodyCell>{item.membership?.name}</TableBodyCell>
                 <TableBodyCell>
                   {#if item.paid}
                     Yes
@@ -242,7 +240,7 @@
                       <Card img="/LOSF Orange.png" horizontal size="md" reverse={false}>
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{item.membership?.name}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight text-wrap">{item.membership?.subTitle}</p>
-                        {#if item.status == "initialised"}
+                        {#if item.status == "initialised" || item.status == "pending"}
                           <Button size="sm" pill outline onclick={() => {
                             window.location.href = data.dpoHostedPage+"?ID="+item.externalTransactionId
                           }}>
@@ -256,10 +254,10 @@
                       </Card>
                     </div>
                   </TableBodyCell>
+                  {#if item.paid}
+                    <MembershipCertificate  name={data.user?.name ?? ""} date={moment(item.createdAt).format("MMM Do, YYYY")} membership={item.membership?.name} membershipID={item.id} />
+                  {/if}
                 </TableBodyRow>
-              {/if}
-              {#if item.paid}
-                <MembershipCertificate  name={data.user?.name ?? ""} date={moment(item.createdAt).format("MMM Do, YYYY")} membership={item.membership?.name} membershipID={item.id} />
               {/if}
               {/each}
           </TableBody>

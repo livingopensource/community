@@ -78,18 +78,24 @@ export async function updateSubscription(id: string, status: string, reason: str
 export async function pendingSubscriptions() {
     return await prisma.subscription.findMany({
         where: {
-            status: "initialised"
+            OR: [
+                {status: "initialised"},
+                {status: "pending"}
+            ]
         }
     })
 }
 
 export async function updateSubscriptionStatus(id: string, status: string) {
+    let paid = false
+    if (status == "succeeded") paid = true
     return await prisma.subscription.update({
         where: {
             id: id
         },
         data: {
-            status: status
+            status: status,
+            paid: paid
         }
     })
 }

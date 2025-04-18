@@ -4,6 +4,7 @@ import { pendingSubscriptions, updateSubscriptionStatus } from "../databases/sub
 
 export async function processPayments() {
     const subscriptions = await pendingSubscriptions()
+    console.log(`Found ${subscriptions.length} pending transactions`)
     for (const subscription of subscriptions) {
         const txnId = subscription.externalTransactionId
         if (txnId == null) {
